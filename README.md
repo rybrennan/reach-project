@@ -130,3 +130,8 @@ module.exports = {
 };
 
 ```
+
+
+<!-- All hail this article
+
+https://stackoverflow.com/questions/21895233/how-in-node-to-split-string-by-newline-n -->

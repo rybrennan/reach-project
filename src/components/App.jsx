@@ -15,7 +15,6 @@ class App extends React.Component {
     this.handleEasy = this.handleEasy.bind(this);
   }
 
-
   componentDidMount() {
     fetch('/all')
       .then(response => response.json())
@@ -31,8 +30,29 @@ class App extends React.Component {
   }
 
   handleEasy() {
-    let difficultySetting = Math.floor(Math.random() * (4 - 1)) + 1;
+    this.handleAjax('easy');
+  }
+
+  handleMedium() {
+    this.handleAjax('medium');
+  }
+
+  handleSuperSmart() {
+    this.handleAjax('hard');
+  }
+
+  handleAjax(setting) {
     let self = this;
+    let difficultySetting;
+    // Math.floor(Math.random() * (max - min + 1) + min);
+    if (setting === 'easy') {
+      difficultySetting = Math.floor(Math.random() * (4 - 1 + 1) + 1);
+    } else if (setting === 'medium') {
+      difficultySetting = Math.floor(Math.random() * (7 - 5 + 1) + 5);
+    } else {
+      difficultySetting = Math.floor(Math.random() * (10 - 8 + 1) + 8);
+    }
+    console.log(difficultySetting)
 
     $.ajax({
       url: 'http://localhost:3000/difficulty',
@@ -51,19 +71,24 @@ class App extends React.Component {
     });
   }
 
-    render() {
-      return (
-        <div className="App">
-          <div>
-            <button onClick={() => this.handleEasy()}>Easy Peezy</button>
-          </div>
-          <h1> {this.state.secretWord} </h1>
+  render() {
+    return (
+      <div className="App">
+        <div>
+          <button onClick={() => this.handleEasy()}>Easy Peezy</button>
+          <button onClick={() => this.handleMedium()}>Medium</button>
+          <button onClick={() => this.handleSuperSmart()}>Hard</button>
         </div>
-      );
-    }
+        <h1> {this.state.secretWord} </h1>
+      </div>
+    );
   }
+}
 
-  export default App;
+export default App;
+
+
+
 
 
 

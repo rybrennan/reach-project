@@ -24,7 +24,6 @@ const getWordByDifficulty = (rating, callback) => {
     let wordsArray = response.data.split(/\r?\n/);
     let randoWord = wordsArray[wordIdx];
 
-    console.log('OMG A RANDO WORD ', randoWord)
     callback(null, randoWord);
   })
   .catch((error) => {

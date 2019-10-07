@@ -21,7 +21,7 @@ const getWordByDifficulty = (rating, callback) => {
   http.get(`${linkedinUrl}?difficulty=${rating}&count=50&minLength=4`)
   .then((response) => {
     let wordIdx = Math.floor(Math.random() * (50 - 1)) + 1;
-    let wordsArray = response.data.split(/\r?\n/)
+    let wordsArray = response.data.split(/\r?\n/);
     let randoWord = wordsArray[wordIdx];
 
     console.log('OMG A RANDO WORD ', randoWord)

@@ -1,5 +1,5 @@
 const axios = require('axios');
-const url = 'http://app.linkedin-reach.io/words?difficulty=5&count=1';
+const url = 'http://app.linkedin-reach.io/words?difficulty=2&count=1';
 
 const http = axios.create({
   baseURL: url
@@ -23,6 +23,6 @@ module.exports = {
   http
 };
 
-getAll((err, results) => {
-  console.log('I am results', results)
-})
+// getAll((err, results) => {
+//   console.log('I am results', results)
+// })

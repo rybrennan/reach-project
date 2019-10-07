@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import $ from 'jquery';
 
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -11,7 +12,9 @@ class App extends React.Component {
       incorrectLetters: []
     }
 
+    this.handleEasy = this.handleEasy.bind(this);
   }
+
 
   componentDidMount() {
     fetch('/all')
@@ -25,44 +28,46 @@ class App extends React.Component {
       .catch((err) => {
         console.log('We have an error, ', err)
       })
-
-    this.handleEasy = this.handleEasy.bind(this);
   }
 
   handleEasy() {
-    console.log('in handleEasy AJAX33')
     let difficultySetting = Math.floor(Math.random() * (4 - 1)) + 1;
-    const params = {
-      difficultySetting: difficultySetting
-    };
+    let self = this;
+
     $.ajax({
-      // This is the url you should use to communicate with the parse API server.
       url: 'http://localhost:3000/difficulty',
       type: 'GET',
+      dataType: 'json',
       data: JSON.stringify(difficultySetting),
       contentType: 'application/json',
-      success: function (data) {
-        console.log('Successfully Queried handleEasy', data);
+      success: function (easyWord) {
+        self.setState({
+          secretWord: easyWord
+        })
       },
       error: function (data) {
-
         console.error('Error in handleEasy', data);
       }
     });
   }
 
-  render() {
-    return (
-      <div className="App">
-        <div>
-          <button onClick={() => this.handleEasy()}>Easy Peezy</button>
+    render() {
+      return (
+        <div className="App">
+          <div>
+            <button onClick={() => this.handleEasy()}>Easy Peezy</button>
+          </div>
+          <h1> {this.state.secretWord} </h1>
         </div>
-        <h1> {this.state.secretWord} </h1>
-      </div>
-    );
+      );
+    }
   }
-}
-export default App;
+
+  export default App;
+
+
+
+
 
 
 

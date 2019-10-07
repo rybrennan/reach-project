@@ -15,7 +15,7 @@ router.get('/difficulty', (req, res) => {
 
   utils.getWordByDifficulty(difficultySetting, (error, response) => {
     res.status(200).json(response);
-    //sending to handleEasy
+
   })
 });
 

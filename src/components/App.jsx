@@ -92,9 +92,12 @@ class App extends React.Component {
       dataType: 'json',
       data: JSON.stringify(difficultySetting),
       contentType: 'application/json',
-      success: function (easyWord) {
+      success: function (wordsArray) {
+        //this is coming back from getWordByDifficulty
+
         self.setState({
-          secretWord: easyWord
+          secretWord: wordsArray[0],
+          mappedWord: wordsArray[1]
         })
       },
       error: function (data) {

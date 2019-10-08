@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import $ from 'jquery';
+import Input from './Input';
 
 
 class App extends React.Component {
@@ -13,6 +14,8 @@ class App extends React.Component {
       guessedLetter: ''
     }
 
+    this.handleChange = this.handleChange.bind(this);
+    this.handleCheckLetter = this.handleCheckLetter.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -40,7 +43,7 @@ class App extends React.Component {
   handleSuperSmart() {
     this.handleAjax('hard');
   }
-
+//HandleChange!!
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -108,12 +111,12 @@ class App extends React.Component {
           <button onClick={() => this.handleMedium()}>Medium</button>
           <button onClick={() => this.handleSuperSmart()}>Hard</button>
         </div>
+        Guessed Letters:
         <h1> {this.state.letters} </h1>
         <br />
         <br />
         <br />
-        <input type='text' onChange={this.handleChange} name='guessedLetter' />
-        <button onClick={() => this.handleCheckLetter()}>Check</button>
+        <Input onHandleCheckLetter={this.handleCheckLetter} onHandleChange={this.handleChange}/>
       </div>
     );
   }

@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import $ from 'jquery';
 import Input from './Input';
+import ReactHelpers from '/Users/ryanbrennan/Desktop/repls/linkedin/final/utils/react-helpers.js'
 
 
 class App extends React.Component {
@@ -55,6 +56,8 @@ class App extends React.Component {
       if (this.state.letters.includes(this.state.guessedLetter)) {
         alert('You have already picked this letter!');
       } else {
+        //start of notes
+        //Checking function goes here
         let copyLetters = this.state.letters.concat(this.state.guessedLetter)
         this.setState({
           letters: copyLetters,

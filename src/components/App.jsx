@@ -9,10 +9,11 @@ class App extends React.Component {
 
     this.state = {
       secretWord: 'Ryan',
-      incorrectLetters: []
+      incorrectLetters: [],
+      guessedLetter: ''
     }
 
-    this.handleEasy = this.handleEasy.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +41,17 @@ class App extends React.Component {
   handleSuperSmart() {
     this.handleAjax('hard');
   }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleCheckLetter() {
+    this.state.secretWord.indexOf(this.state.guessedLetter) > -1 ? console.log('YUP') : console.log('nope')
+  }
+
 
   handleAjax(setting) {
     let self = this;
@@ -80,12 +92,22 @@ class App extends React.Component {
           <button onClick={() => this.handleSuperSmart()}>Hard</button>
         </div>
         <h1> {this.state.secretWord} </h1>
+          <br />
+          <br />
+          <br />
+          <input type='text' onChange={this.handleChange} name='guessedLetter'/>
+          <button onClick={() => this.handleCheckLetter()}>Check</button>
       </div>
     );
   }
 }
 
+
 export default App;
+
+
+
+
 
 
 

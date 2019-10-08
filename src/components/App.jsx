@@ -9,7 +9,7 @@ class App extends React.Component {
 
     this.state = {
       secretWord: 'Ryan',
-      incorrectLetters: [],
+      letters: [],
       guessedLetter: ''
     }
 
@@ -49,7 +49,12 @@ class App extends React.Component {
   }
 
   handleCheckLetter() {
-    this.state.secretWord.indexOf(this.state.guessedLetter) > -1 ? console.log('YUP') : console.log('nope')
+    let letters = this.state.letters.concat(this.state.guessedLetter)
+    this.state.secretWord.indexOf(this.state.guessedLetter) > -1 ? console.log('YUP') : console.log('nope');
+
+    this.setState({
+      letters
+    })
   }
 
 

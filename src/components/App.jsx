@@ -20,7 +20,6 @@ class App extends React.Component {
     fetch('/all')
       .then(response => response.json())
       .then((word) => {
-        console.log(typeof word)
         this.setState({
           secretWord: word
         })
@@ -49,14 +48,27 @@ class App extends React.Component {
   }
 
   handleCheckLetter() {
-    let letters = this.state.letters.concat(this.state.guessedLetter)
-    this.state.secretWord.indexOf(this.state.guessedLetter) > -1 ? console.log('YUP') : console.log('nope');
-
-    this.setState({
-      letters
-    })
+    if (this.state.secretWord.indexOf(this.state.guessedLetter) > -1) {
+      if (this.state.letters.includes(this.state.guessedLetter)) {
+        alert('You have already picked this letter!');
+      } else {
+        let copyLetters = this.state.letters.concat(this.state.guessedLetter)
+        this.setState({
+          letters: copyLetters,
+        })
+      }
+    } else {
+      //if it is not in the word
+      if (this.state.letters.includes(this.state.guessedLetter)) {
+        alert('You have already picked this letter!');
+      } else {
+        let copyLetters = this.state.letters.concat(this.state.guessedLetter)
+        this.setState({
+          letters: copyLetters,
+        })
+      }
+    }
   }
-
 
   handleAjax(setting) {
     let self = this;
@@ -96,19 +108,23 @@ class App extends React.Component {
           <button onClick={() => this.handleMedium()}>Medium</button>
           <button onClick={() => this.handleSuperSmart()}>Hard</button>
         </div>
-        <h1> {this.state.secretWord} </h1>
-          <br />
-          <br />
-          <br />
-          <input type='text' onChange={this.handleChange} name='guessedLetter'/>
-          <button onClick={() => this.handleCheckLetter()}>Check</button>
+        <h1> {this.state.letters} </h1>
+        <br />
+        <br />
+        <br />
+        <input type='text' onChange={this.handleChange} name='guessedLetter' />
+        <button onClick={() => this.handleCheckLetter()}>Check</button>
       </div>
     );
   }
 }
 
-
 export default App;
+
+
+
+
+
 
 
 

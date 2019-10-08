@@ -17,6 +17,20 @@ const getAll = (callback) => {
   })
 }
 
+
+const mapWord = (secretWord) => {
+  //callback??
+  let map = {};
+
+  for (var i = 0; i < secretWord.length; i ++) {
+    let char = secretWord[i];
+    !map[char] ? map[char] = 1 : map[char] ++;
+  }
+
+  return map;
+}
+console.log(mapWord('ryanbrennan'))
+
 const getWordByDifficulty = (rating, callback) => {
   http.get(`${linkedinUrl}?difficulty=${rating}&count=50&minLength=4`)
   .then((response) => {
@@ -27,7 +41,7 @@ const getWordByDifficulty = (rating, callback) => {
     callback(null, randoWord);
   })
   .catch((error) => {
-    console.log(error)
+    console.log(error, 'In /utils/index.js');
     callback(error, null);
   })
 }

@@ -1,12 +1,9 @@
 const axios = require('axios');
-//Make this into a class??
 
 let linkedinUrl = `http://app.linkedin-reach.io/words`
 const http = axios.create({
   baseURL: linkedinUrl
 });
-
-
 
 const getAll = (callback) => {
   http.get(`${linkedinUrl}?difficulty=2&count=1`)
@@ -21,7 +18,6 @@ const getAll = (callback) => {
 }
 
 const mapWord = (secretWord) => {
-  //callback??
   let map = {};
 
   for (var i = 0; i < secretWord.length; i ++) {
@@ -51,8 +47,9 @@ const getWordByDifficulty = (rating, callback) => {
 module.exports = {
   getAll,
   getWordByDifficulty
-  // http,
 };
+
+
 
 
 

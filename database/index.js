@@ -21,7 +21,7 @@ Database.prototype.getScoreBoard = function (callback) {
   })
 }
 const test = new Database();
-test.getScoreBoard()
+test.getScoreBoard();
 
 
 

@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import $ from 'jquery';
-import Input from './Input';
 import Alphabet from './Alphabet';
 import ReactHelpers from '../../utils/react-helpers.js';
 
@@ -37,7 +36,6 @@ class App extends React.Component {
       })
   }
 
-
   handleEasy() {
     this.handleAjax('easy');
   }
@@ -55,6 +53,7 @@ class App extends React.Component {
       [e.target.name]: e.target.value
     })
   }
+
   handleClick(e) {
     let currentGuessedLetter = e.target.textContent;
     let choosenLetters = this.state.letters;
@@ -67,89 +66,88 @@ class App extends React.Component {
     }, () => {
       this.handleCheckLetter();
     })
-
   }
 
+    handleCheckLetter() {
+      let currentGuessedLetter = this.state.guessedLetter;
+      console.log('Guessed letter in handlechecker', this.state.guessedLetter)
+      let choosenLetters = this.state.letters;
+      let secretWord = this.state.secretWord;
+      let mappedWord = this.state.mappedWord;
 
+      this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, (numberOfOccurences, isWinner, newMappedWord) => {
 
-  handleCheckLetter() {
-    let currentGuessedLetter = this.state.guessedLetter;
-    console.log('Guessed letter in handlechecker', this.state.guessedLetter)
-    let choosenLetters = this.state.letters;
-    let secretWord = this.state.secretWord;
-    let mappedWord = this.state.mappedWord;
+        this.setState({
+          letters: choosenLetters,
+          mappedWord: newMappedWord
+        })
+        if (isWinner === true) {
+          alert('You Won the Game!');
+        } else if (!isWinner) {
 
-    this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, (numberOfOccurences, isWinner, newMappedWord) => {
-
-      this.setState({
-        letters: choosenLetters,
-        mappedWord: newMappedWord
-      })
-      if (isWinner === true) {
-        alert('You Won the Game!');
-      } else if (!isWinner) {
-
-      }
-    });
-
-
-
-
-
-  }
-
-  handleAjax(setting) {
-    let self = this;
-    let difficultySetting;
-
-    if (setting === 'easy') {
-      difficultySetting = Math.floor(Math.random() * (4 - 1 + 1) + 1);
-    } else if (setting === 'medium') {
-      difficultySetting = Math.floor(Math.random() * (7 - 5 + 1) + 5);
-    } else {
-      difficultySetting = Math.floor(Math.random() * (10 - 8 + 1) + 8);
+        }
+      });
     }
 
-    $.ajax({
-      url: 'http://localhost:3000/difficulty',
-      type: 'GET',
-      dataType: 'json',
-      data: JSON.stringify(difficultySetting),
-      contentType: 'application/json',
-      success: function (wordsArray) {
-        //this is coming back from getWordByDifficulty
-        self.setState({
-          secretWord: wordsArray[0],
-          mappedWord: wordsArray[1],
-        })
-      },
-      error: function (data) {
-        console.error('Error in handleEasy', data);
+    handleAjax(setting) {
+      let self = this;
+      let difficultySetting;
+
+      if (setting === 'easy') {
+        difficultySetting = Math.floor(Math.random() * (4 - 1 + 1) + 1);
+      } else if (setting === 'medium') {
+        difficultySetting = Math.floor(Math.random() * (7 - 5 + 1) + 5);
+      } else {
+        difficultySetting = Math.floor(Math.random() * (10 - 8 + 1) + 8);
       }
-    });
-  }
 
-  render() {
-    return (
-      <div className="App">
-        <div>
-          <button onClick={() => this.handleEasy()}>Easy Peezy</button>
-          <button onClick={() => this.handleMedium()}>Medium</button>
-          <button onClick={() => this.handleSuperSmart()}>Hard</button>
+      $.ajax({
+        url: 'http://localhost:3000/difficulty',
+        type: 'GET',
+        dataType: 'json',
+        data: JSON.stringify(difficultySetting),
+        contentType: 'application/json',
+        success: function (wordsArray) {
+          //this is coming back from getWordByDifficulty
+          self.setState({
+            secretWord: wordsArray[0],
+            mappedWord: wordsArray[1],
+          })
+        },
+        error: function (data) {
+          console.error('Error in handleEasy', data);
+        }
+      });
+    }
+
+    render() {
+      return (
+        <div className="App">
+          <div>
+            <button onClick={() => this.handleEasy()}>Easy Peezy</button>
+            <button onClick={() => this.handleMedium()}>Medium</button>
+            <button onClick={() => this.handleSuperSmart()}>Hard</button>
+          </div>
+          Guessed Letters:
+          <h1> {this.state.letters} </h1>
+          <br />
+          <br />
+          <br />
+          <Alphabet choosenLetters={this.state.letters} onClick={this.handleClick} />
         </div>
-        Guessed Letters:
-        <h1> {this.state.letters} </h1>
-        <br />
-        <br />
-        <br />
-        <Alphabet choosenLetters={this.state.letters} onClick={this.handleClick} />
-        {/* <Input onHandleCheckLetter={this.handleCheckLetter} onHandleChange={this.handleChange} /> */}
-      </div>
-    );
+      );
+    }
   }
-}
 
-export default App;
+  export default App;
+
+
+
+
+
+
+
+
 
 
 

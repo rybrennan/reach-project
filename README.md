@@ -19,7 +19,7 @@
   - Add error Handling
   - All-things-keyboard and UI'y
   - A mySQL based scoreboard component
-  - And mysql in genera
+  - And mysql in general
   - AWS EC2 deploy
 	Stretch goals-
 - A dictionary (clue) API- eg
@@ -41,6 +41,31 @@
 
 - Server: [Express](http://expressjs.com/)
 - Client: [React](http://reactjs.org/)
+- Database: [mySQL](https://dev.mysql.com/doc/refman/5.7/en/)
+
+```sh
+# install npm dependencies
+$> cd /path/to/hangman
+$> npm install
+# setup .env file (for sql creds)
+$> touch .env
+# seed database `scoreboard` (change credentials as needed)
+$> npm run seed-db
+```
+
+Inside `.env` place your SQL credentials (change if needed)
+```
+# DB_HOST=localhost
+# DB_USER=root
+# DB_PASS=
+```
+
+To execute:
+
+```sh
+$ npm run server-dev
+$ npm run react-dev
+```
 
 ## 1.4. Log
 

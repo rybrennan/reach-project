@@ -16,11 +16,3 @@ if (process.env.NODE_ENV) {
     database: 'board'
   };
 };
-
-// module.exports = {
-//   host: 'localhost',
-//   user: 'root',
-//   password: '',
-//   database: 'board'
-// };
-

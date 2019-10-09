@@ -8,11 +8,6 @@ con.connect((err) => {
   console.log('Database Connected!!')
 })
 
-class Database {
-  constructor() {
-
-  }
-}
 
 Database.prototype.getScoreBoard = function (callback) {
   let queryString = `SELECT scores.score, players.player_name, scores.date FROM scores
@@ -25,7 +20,8 @@ Database.prototype.getScoreBoard = function (callback) {
 
   })
 }
-
 const test = new Database();
-
 test.getScoreBoard()
+
+
+

@@ -58,13 +58,10 @@ class App extends React.Component {
     let choosenLetters = this.state.letters;
     let secretWord = this.state.secretWord;
     let mappedWord = this.state.mappedWord;
-    //is guessedLetter in PAST choosen Letters?
-    // if is IS NOT, THEN (YES) we check
+
     if (!choosenLetters.includes(currentGuessedLetter)) {
-      //now we check if it has been choosen before
       this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, (numberOfOccurences, isWinner, newMappedWord) => {
         choosenLetters = choosenLetters.concat(currentGuessedLetter);
-        //REMEMBER = NO MATTER WHAT, WE HAVE TO SET NEW STATE (map)
         this.setState({
           letters: choosenLetters,
           mappedWord: newMappedWord
@@ -89,7 +86,6 @@ class App extends React.Component {
     } else {
       difficultySetting = Math.floor(Math.random() * (10 - 8 + 1) + 8);
     }
-    console.log(difficultySetting)
 
     $.ajax({
       url: 'http://localhost:3000/difficulty',

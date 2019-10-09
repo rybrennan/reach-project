@@ -47,7 +47,7 @@
 # install npm dependencies
 $> cd /path/to/hangman
 $> npm install
-# setup .env file (for sql creds)
+# create .env file (for sql creds)
 $> touch .env
 # seed database `scoreboard` (change credentials as needed)
 $> npm run seed-db

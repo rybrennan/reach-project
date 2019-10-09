@@ -19,11 +19,13 @@ Database.prototype.getScoreBoard = function (callback) {
                     INNER JOIN players ON scores.user_id=players.player_id
                     ORDER BY scores.score DESC`;
   con.query(queryString, (err, scoreBoard) => {
-    console.log('OMG OUR scoreboard! ', scoreBoard);
 
     if (err) throw err;
-    scoreboard.forEach((score) => {
-      console.log('Here are our records')
-    })
+    console.log('OMG OUR scoreboard! ', scoreBoard[0].score);
+
   })
 }
+
+const test = new Database();
+
+test.getScoreBoard()

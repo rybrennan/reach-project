@@ -12,12 +12,14 @@ class App extends React.Component {
     this.state = {
       secretWord: 'Ryan',
       letters: [],
-      guessedLetter: ''
+      guessedLetter: '',
+      mappedWord: {}
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleCheckLetter = this.handleCheckLetter.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.reactHelpers = new ReactHelpers();
   }
 
   componentDidMount() {
@@ -44,7 +46,7 @@ class App extends React.Component {
   handleSuperSmart() {
     this.handleAjax('hard');
   }
-//HandleChange!!
+  //HandleChange!!
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -52,34 +54,34 @@ class App extends React.Component {
   }
 
   handleCheckLetter() {
-    if (this.state.secretWord.indexOf(this.state.guessedLetter) > -1) {
-      if (this.state.letters.includes(this.state.guessedLetter)) {
-        alert('You have already picked this letter!');
-      } else {
-        //start of notes
-        //Checking function goes here
-        let copyLetters = this.state.letters.concat(this.state.guessedLetter)
+    let currentGuessedLetter = this.state.guessedLetter;
+    let choosenLetters = this.state.letters;
+    let secretWord = this.state.secretWord;
+    let mappedWord = this.state.mappedWord;
+    //is guessedLetter in PAST choosen Letters?
+    // if is IS NOT, THEN (YES) we check
+    if (!choosenLetters.includes(currentGuessedLetter)) {
+      //now we check if it has been choosen before
+      this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, (numberOfOccurences, isWinner, newMappedWord) => {
+        choosenLetters = choosenLetters.concat(currentGuessedLetter);
+        //REMEMBER = NO MATTER WHAT, WE HAVE TO SET NEW STATE (map)
         this.setState({
-          letters: copyLetters,
+          letters: choosenLetters,
+          mappedWord: newMappedWord
         })
-      }
-    } else {
-      //if it is not in the word
-      if (this.state.letters.includes(this.state.guessedLetter)) {
-        alert('You have already picked this letter!');
-      } else {
-        let copyLetters = this.state.letters.concat(this.state.guessedLetter)
-        this.setState({
-          letters: copyLetters,
-        })
-      }
+        if (isWinner === true) {
+          alert('You Won the Game!');
+        } else {
+          console.log('KEEP PICKING!');
+        }
+      })
     }
   }
 
   handleAjax(setting) {
     let self = this;
     let difficultySetting;
-    // Math.floor(Math.random() * (max - min + 1) + min);
+
     if (setting === 'easy') {
       difficultySetting = Math.floor(Math.random() * (4 - 1 + 1) + 1);
     } else if (setting === 'medium') {
@@ -97,10 +99,9 @@ class App extends React.Component {
       contentType: 'application/json',
       success: function (wordsArray) {
         //this is coming back from getWordByDifficulty
-
         self.setState({
           secretWord: wordsArray[0],
-          mappedWord: wordsArray[1]
+          mappedWord: wordsArray[1],
         })
       },
       error: function (data) {
@@ -122,13 +123,16 @@ class App extends React.Component {
         <br />
         <br />
         <br />
-        <Input onHandleCheckLetter={this.handleCheckLetter} onHandleChange={this.handleChange}/>
+        <Input onHandleCheckLetter={this.handleCheckLetter} onHandleChange={this.handleChange} />
       </div>
     );
   }
 }
 
 export default App;
+
+
+
 
 
 

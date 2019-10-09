@@ -1,25 +1,29 @@
 # 1. Hangman TOC
 
-  - [1.1. To do](#11-to-do)
-  - [1.2. Usage](#12-usage)
-  - [1.3. Development Setup](#13-development-setup)
-  - [1.4. Log](#14-log)
-    - [1.4.1. Setting up React without CRA](#141-setting-up-react-without-CRA)
-      - [1.4.1.1 Configure Webpack](#1411-configure-webpack)
-      - [1.4.1.2 Configure Babel](#1412-configure-babel)
-      - [1.4.1.3 Make Webpack aware of Babel](#1413-make-webpack-aware-of-babel)
+- [1.1. To do](#11-to-do)
+- [1.2. Usage](#12-usage)
+- [1.3. API endpoints](#121-api-endpoints)
+- [1.4. Development Setup](#14-development-setup)
+- [1.5. Log](#15-log)
+  - [1.5.1. Setting up React without CRA](#151-setting-up-react-without-CRA)
+    - [1.5.1.1 Configure Webpack](#1511-configure-webpack)
+    - [1.5.1.2 Configure Babel](#1512-configure-babel)
+    - [1.5.1.3 Make Webpack aware of Babel](#1513-make-webpack-aware-of-babel)
+  - [1.5.2. Setting up API](#152-setting-up-api)
+  - [1.5.3. Refactor Functionality around handleCheckLetter](#153-refactor-functionality-around-handleCheckLetter)
+  - [1.5.4. Setting up MySQL](#154-setting-up-mqsql)
 
-
- ## 1.1. To do
+## 1.1. To do
 
 ```
  x setup React with Webpack and Babel
  x setup Express server
+ x MAKE API SECTION IN README
  - revisit to bundle into a `dist` folder
   - Add error Handling
   - All-things-keyboard and UI'y
   - A mySQL based scoreboard component
-  - And mysql in general
+  x And mysql in general
   - AWS EC2 deploy
 	Stretch goals-
 - A dictionary (clue) API- eg
@@ -33,7 +37,6 @@
 
 ```
 
-
 ## 1.2. Usage
 
 - At the start of the game the computer/secret-keeper will choose a dictionary word
@@ -41,7 +44,14 @@
 - The guesser wins the game if they guess all letters in the secret word correctly and have
 - not already lost the game per the conditions above
 
-## 1.3. Development Setup
+##  1.3. API Endpoints
+
+Below you can find all available endpoints.
+
++ GET `/:trailId/trailStats`
+  - Given a trailId, retrieves stats of trail according reviews given. -->
+
+## 1.4. Development Setup
 
 - Server: [Express](http://expressjs.com/)
 - Client: [React](http://reactjs.org/)
@@ -58,6 +68,7 @@ $> npm run seed-db
 ```
 
 Inside `.env` place your SQL credentials (change if needed)
+
 ```
 # DB_HOST=localhost
 # DB_USER=root
@@ -71,28 +82,34 @@ $ npm run server-dev
 $ npm run react-dev
 ```
 
-## 1.4. Log
+## 1.5. Log
 
-### 1.4.1. Setting up React without CRA
+### 1.5.1. Setting up React without CRA
 
 I work regularly with React but it had been a bit since I setup a React application from scratch.
 I opted to forgoe using Create React App so I could get a review on what Webpack and Babel were doing behind the scenes.
 
-#### 1.4.1.1 Configure Webpack
+#### 1.5.1.1 Configure Webpack
+
 The command below installed:
+
 - [webpack](https://webpack.js.org) as our module bundler and build tool.
 - [webpack-dev-server](https://webpack.js.org/configuration/dev-server/) which serves our bundled app in `/public` in a local environment.
 - [webpack-cli](https://webpack-gatsby.netlify.com/api/cli/) configures our Webpack with a config file
 
-``` sh
+### 1.5.1. Setting up React without CRA
+
+```sh
 $> npm install --save-dev webpack webpack-dev-server webpack-cli
 ```
+
 In the webpack configuration file, `./src/index.js` file as entry point to bundle all of source files and these bundled files will result in a `bundle.js` file which will be generated in `/public` folder.
 
 ```
 webpack.config.js
 ```
-``` js
+
+```js
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -104,74 +121,73 @@ module.exports = {
     contentBase: './public'
   }
 };
-
 ```
 
-#### 1.4.1.2 Configure Babel
+#### 1.5.1.2 Configure Babel
 
 This command:
+
 ```
 $> npm install --save-dev babel-core babel-loader babel-preset-env babel-preset-stage-2 babel-preset-react
 ```
+
 Installs:
+
 - [babel](https://babeljs.io) Babel transpiles back our code to ES5 so it will work in all browsers.
 - Also it converts JSX into Javascript:
 
 So this:
+
 ```js
 function NameComponent(props) {
-  return (
-    <h1>{props.name}</h1>
-  )
+  return <h1>{props.name}</h1>;
 }
 ```
 
 Becomes this:
+
 ```js
 function NameComponent(props) {
-  return React.createElement(
-    'h1',
-    null,
-    props.name
-  )
+  return React.createElement('h1', null, props.name);
 }
 ```
-#### 1.4.1.3 Make Webpack aware of Babel
+
+#### 1.5.1.3 Make Webpack aware of Babel
 
 Back in the `webpack.config` file, we add `module` and `resolve` keys.
 
-``` js
+```js
 var path = require('path');
 
 module.exports = {
-    entry: './src/index.js',
-    //Right Here:
-    module: {
-        rules: [
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: ['babel-loader']
-            }
-        ]
-    },
-    //And Here:
-    resolve: {
-        extensions: ['*', '.js', '.jsx']
-    },
-    output: {
-        filename: 'bundle.js',
-        path: path.join(__dirname, '/public')
-    },
-    devServer: {
-        contentBase: './public',
-
-    }
+  entry: './src/index.js',
+  //Right Here:
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader']
+      }
+    ]
+  },
+  //And Here:
+  resolve: {
+    extensions: ['*', '.js', '.jsx']
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.join(__dirname, '/public')
+  },
+  devServer: {
+    contentBase: './public'
+  }
 };
-
 ```
+### 1.5.3. Refactor Functionality around `handleCheckLetter`
+### 1.5.4. Setting up MySQL
 
 
-<!-- All hail this article
 
-https://stackoverflow.com/questions/21895233/how-in-node-to-split-string-by-newline-n -->
+
+

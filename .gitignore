@@ -1,5 +1,7 @@
 node_modules
 package-lock.json
 public/bundle.js
-first_draft.md
 .env
+
+first_draft.md
+DONOTDELETE.jsx

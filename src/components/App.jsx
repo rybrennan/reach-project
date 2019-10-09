@@ -2,7 +2,8 @@ import React from "react";
 import axios from "axios";
 import $ from 'jquery';
 import Input from './Input';
-import ReactHelpers from '../../utils/react-helpers.js'
+import Alphabet from './Alphabet';
+import ReactHelpers from '../../utils/react-helpers.js';
 
 
 class App extends React.Component {
@@ -19,6 +20,7 @@ class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleCheckLetter = this.handleCheckLetter.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.reactHelpers = new ReactHelpers();
   }
 
@@ -53,26 +55,36 @@ class App extends React.Component {
       [e.target.name]: e.target.value
     })
   }
+  handleClick(e) {
+    console.log('We are getting our letter', e.target.textContent)
+  }
 
   handleCheckLetter() {
+    console.log('CLICK')
     let currentGuessedLetter = this.state.guessedLetter;
     let choosenLetters = this.state.letters;
     let secretWord = this.state.secretWord;
     let mappedWord = this.state.mappedWord;
 
+    //This WHOLE BLOCK IS THIS IS THE FIRST TIME THE LETTER HAS BEEN PICKED
     if (!choosenLetters.includes(currentGuessedLetter)) {
+
       this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, (numberOfOccurences, isWinner, newMappedWord) => {
         choosenLetters = choosenLetters.concat(currentGuessedLetter);
+
         this.setState({
           letters: choosenLetters,
           mappedWord: newMappedWord
         })
         if (isWinner === true) {
           alert('You Won the Game!');
-        } else {
-          console.log('KEEP PICKING!');
+        } else if (!isWinner){
+
         }
       });
+      console.log(this.state.letters)
+    } else {
+      //if already has been chosen
     }
   }
 
@@ -120,7 +132,8 @@ class App extends React.Component {
         <br />
         <br />
         <br />
-        <Input onHandleCheckLetter={this.handleCheckLetter} onHandleChange={this.handleChange} />
+        <Alphabet choosenLetters={this.state.letters} onClick={this.handleClick} />
+        {/* <Input onHandleCheckLetter={this.handleCheckLetter} onHandleChange={this.handleChange} /> */}
       </div>
     );
   }

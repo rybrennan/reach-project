@@ -22,6 +22,7 @@ class App extends React.Component {
     this.reactHelpers = new ReactHelpers();
   }
 
+
   componentDidMount() {
     fetch('/all')
       .then(response => response.json())

@@ -16,8 +16,19 @@
  x setup React with Webpack and Babel
  x setup Express server
  - revisit to bundle into a `dist` folder
+  - Add error Handling
+  - All-things-keyboard and UI'y
+  - A mySQL based scoreboard component
+  - And mysql in genera
+  - AWS EC2 deploy
+	Stretch goals-
+- A dictionary (clue) API- eg
+- and corresponding compomemt
+	A bit obnoxious:
+	-A blockchain powered scorring system of some sort
 
 ```
+
 
 ## 1.2. Usage
 

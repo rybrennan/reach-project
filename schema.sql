@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS scoreboard;
+DROP DATABASE IF EXISTS board;
 
-CREATE DATABASE scoreboard;
+CREATE DATABASE board;
 
-USE scoreboard;
+USE board;
 
 CREATE TABLE players (
   player_id int NOT NULL AUTO_INCREMENT,
@@ -18,6 +18,7 @@ CREATE TABLE scores (
   FOREIGN KEY (user_id) REFERENCES players(player_id),
   PRIMARY KEY (score_id)
 ) ENGINE=InnoDB;
+
 
 INSERT INTO players (player_name) VALUES ('Michelle');
 INSERT INTO players (player_name) VALUES ('Ryan');

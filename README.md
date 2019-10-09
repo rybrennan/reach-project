@@ -24,7 +24,11 @@
 	Stretch goals-
 - A dictionary (clue) API- eg
 - and corresponding compomemt
-	A bit obnoxious:
+  Stretchy Stretch goals-
+  -extract scoreboard module and have it deployed as it's own -standalone app to be rendered
+	- Webscale and test Latency
+   in the main app or a proxy
+  A lil Over-the-top:
 	-A blockchain powered scorring system of some sort
 
 ```

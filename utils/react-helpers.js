@@ -8,6 +8,7 @@ class ReactHelpers {
 }
 
 ReactHelpers.prototype.checkLetterAlgo = function(mappedWordfromState, chosenLetter, callback) {
+  console.log('CHOSEN LETTER IN NODE ', chosenLetter)
   //Note: not 'new' yet- will be in callback
   let newMappedWord = mappedWordfromState;
   let winner = false;

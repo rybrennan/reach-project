@@ -13,7 +13,7 @@ class App extends React.Component {
     this.state = {
       secretWord: 'Ryan',
       letters: [],
-      guessedLetter: '',
+      guessedLetter: 'testing',
       mappedWord: {}
     }
 
@@ -23,7 +23,6 @@ class App extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.reactHelpers = new ReactHelpers();
   }
-
 
   componentDidMount() {
     fetch('/all')
@@ -37,6 +36,7 @@ class App extends React.Component {
         console.log('We have an error, ', err)
       })
   }
+
 
   handleEasy() {
     this.handleAjax('easy');
@@ -56,36 +56,46 @@ class App extends React.Component {
     })
   }
   handleClick(e) {
-    console.log('We are getting our letter', e.target.textContent)
+    let currentGuessedLetter = e.target.textContent;
+    let choosenLetters = this.state.letters;
+
+    choosenLetters = choosenLetters.concat(currentGuessedLetter);
+
+    this.setState({
+      letters: choosenLetters,
+      guessedLetter: currentGuessedLetter
+    }, () => {
+      this.handleCheckLetter();
+    })
+
   }
 
+
+
   handleCheckLetter() {
-    console.log('CLICK')
     let currentGuessedLetter = this.state.guessedLetter;
+    console.log('Guessed letter in handlechecker', this.state.guessedLetter)
     let choosenLetters = this.state.letters;
     let secretWord = this.state.secretWord;
     let mappedWord = this.state.mappedWord;
 
-    //This WHOLE BLOCK IS THIS IS THE FIRST TIME THE LETTER HAS BEEN PICKED
-    if (!choosenLetters.includes(currentGuessedLetter)) {
+    this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, (numberOfOccurences, isWinner, newMappedWord) => {
 
-      this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, (numberOfOccurences, isWinner, newMappedWord) => {
-        choosenLetters = choosenLetters.concat(currentGuessedLetter);
+      this.setState({
+        letters: choosenLetters,
+        mappedWord: newMappedWord
+      })
+      if (isWinner === true) {
+        alert('You Won the Game!');
+      } else if (!isWinner) {
 
-        this.setState({
-          letters: choosenLetters,
-          mappedWord: newMappedWord
-        })
-        if (isWinner === true) {
-          alert('You Won the Game!');
-        } else if (!isWinner){
+      }
+    });
 
-        }
-      });
-      console.log(this.state.letters)
-    } else {
-      //if already has been chosen
-    }
+
+
+
+
   }
 
   handleAjax(setting) {

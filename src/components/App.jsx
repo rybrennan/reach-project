@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import $ from 'jquery';
 import Input from './Input';
-import ReactHelpers from '/Users/ryanbrennan/Desktop/repls/linkedin/final/utils/react-helpers.js'
+import ReactHelpers from '../../utils/react-helpers.js'
 
 
 class App extends React.Component {
@@ -46,7 +46,7 @@ class App extends React.Component {
   handleSuperSmart() {
     this.handleAjax('hard');
   }
-  //HandleChange!!
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -71,7 +71,7 @@ class App extends React.Component {
         } else {
           console.log('KEEP PICKING!');
         }
-      })
+      });
     }
   }
 

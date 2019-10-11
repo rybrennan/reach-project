@@ -1,7 +1,8 @@
-import React from "react";
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
 import $ from 'jquery';
 import Alphabet from './Alphabet';
+import HangmanContainer from './Hangman'
 import ReactHelpers from '../../utils/react-helpers.js';
 
 
@@ -13,7 +14,8 @@ class App extends React.Component {
       secretWord: 'Ryan',
       letters: [],
       guessedLetter: 'testing',
-      mappedWord: {}
+      mappedWord: {},
+      step: 1
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -131,6 +133,7 @@ class App extends React.Component {
           Guessed Letters:
           <h1> {this.state.letters} </h1>
           <br />
+          <HangmanContainer step={this.state.step}/>
           <br />
           <br />
           <Alphabet choosenLetters={this.state.letters} onClick={this.handleClick} />

@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   height: 295px;
   background: url(${png1}) no-repeat center center;
   background-size: 100%;
-  margin: 0 15px;
+  margin:0 auto;
   transition: all 0.3s linear;
   &[data-order='2'] {
     background-image: url(${png2});

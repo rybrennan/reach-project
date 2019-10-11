@@ -5,7 +5,7 @@ const Block = styled.ul`
 padding: 0;
 
 list-style-type: none;
-margin: 5px 0;
+display:table; margin:0 auto;
 li {
   cursor: pointer;
   margin-right: 11px;

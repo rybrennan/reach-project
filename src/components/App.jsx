@@ -15,7 +15,7 @@ class App extends React.Component {
       letters: [],
       guessedLetter: 'testing',
       mappedWord: {},
-      step: '4'
+      step: '1'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -133,12 +133,12 @@ class App extends React.Component {
             <button onClick={() => this.handleSuperSmart()}>Hard</button>
           </div>
           Guessed Letters:
-          <h1> {this.state.letters} </h1>
           <br />
           <HangmanContainer step={this.state.step}/>
           <br />
           <br />
           <Alphabet choosenLetters={this.state.letters} onClick={this.handleClick} />
+          <h1> {this.state.letters} </h1>
         </div>
       );
     }

@@ -5,8 +5,8 @@ import png1 from '../img/1.png';
 import png2 from '../img/2.png';
 import png3 from '../img/3.png';
 import png4 from '../img/4.png';
-import png5 from '../img/5.png';
-import png6 from '../img/6.png';
+import PNG from '/Users/ryanbrennan/Desktop/repls/linkedin/hangman/src/img/5.png';
+import PNG1 from '../img/6.png';
 import png7 from '../img/7.png';
 
 const Wrapper = styled.div`
@@ -26,10 +26,10 @@ const Wrapper = styled.div`
     background-image: url(${png4});
   }
   &[data-order='5'] {
-    background-image: url(${png4});
+    background-image: url(${PNG});
   }
   &[data-order='6'] {
-    background-image: url(${png6});
+    background-image: url(${PNG1});
   }
   &[data-order='7'] {
     background-image: url(${png7});

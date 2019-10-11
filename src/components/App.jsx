@@ -7,6 +7,12 @@ import Alphabet from './Alphabet';
 import Tiles from './Tiles';
 import HangmanContainer from './Hangman'
 
+// const Name = styled.h1`
+//   font-size: 56px;
+//   font-family: 'Mansalva', sans-serif;
+//   margin: 0;
+// `;
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -59,10 +65,6 @@ class App extends React.Component {
     })
   }
 
-  // showRemainingLetters() {
-  //   const missedLetters = this.state.secretWord.filter(())
-  // }
-
   handleClick(e) {
     let currentGuessedLetter = e.target.textContent;
     let choosenLetters = this.state.letters;
@@ -84,28 +86,43 @@ class App extends React.Component {
     let mappedWord = this.state.mappedWord;
     let currentStep = this.state.step;
     let correctGuesses = this.state.correctLetters;
-
+    let self = this;
     this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, currentStep, correctGuesses, (numberOfOccurences, isWinner, newMappedWord, newStep, correctGuessesArray, isLoser) => {
 
       this.setState({
         letters: choosenLetters,
         mappedWord: newMappedWord,
         step: newStep,
-        correctLetters: correctGuessesArray
-
+        correctLetters: correctGuessesArray,
+      }, () => {
+        //GAME OVER HERE!!
+        if (self.state.step === '7') {
+          self.getRemaining();
+        }
       })
       if (isWinner === true) {
         //refactor this to change state
           alert('You Won the Game!');
-        } else if (isLoser === true) {
-          alert('LOZAAAA')
         }
       });
     }
 
+    getRemaining() {
+      let correctLetters = this.state.correctLetters;
+      let secretWord =  this.state.secretWord;
+
+      let remaining = secretWord.split('').filter((char) => {
+        return !correctLetters.includes(char);
+      });
+
+     this.setState({
+       missedLetters: remaining
+     })
+    }
 
 
-  handleAjax(setting) {
+
+   handleAjax(setting) {
     let self = this;
     let difficultySetting;
 
@@ -124,7 +141,7 @@ class App extends React.Component {
       data: JSON.stringify(difficultySetting),
       contentType: 'application/json',
       success: function (wordsArray) {
-        //this is coming back from getWordByDifficulty
+
         self.setState({
           secretWord: wordsArray[0],
           mappedWord: wordsArray[1],
@@ -136,32 +153,39 @@ class App extends React.Component {
     });
   }
 
-
-
-
-    render() {
-      return (
-        <div className="App">
-          <br />
-          <div>
-            Pick your poison:
-            <button onClick={() => this.handleEasy()}>Easy Peezy</button>
-            <button onClick={() => this.handleMedium()}>Medium</button>
-            <button onClick={() => this.handleSuperSmart()}>Hard</button>
-          </div>
-          <HangmanContainer step={this.state.step}/>
-          <br />
-          <br />
-
-          <Alphabet choosenLetters={this.state.letters} onClick={this.handleClick} />
-
-          <Tiles secretWord={this.state.secretWord} guessedLetter={this.state.guessedLetter} choosenLetters={this.state.letters} isLoser={this.state.loser}/>
+  render() {
+    return (
+      <div className="App">
+        {/* <Name>Hire-me Hangman 💀</Name> */}
+        <br />
+        <div>
+          Pick your poison:
+          <button onClick={() => this.handleEasy()}>Easy Peezy</button>
+          <button onClick={() => this.handleMedium()}>Medium</button>
+          <button onClick={() => this.handleSuperSmart()}>Hard</button>
         </div>
-      );
-    }
-  }
+        <HangmanContainer step={this.state.step}/>
+        <br />
+        <br />
 
-  export default App;
+        <Alphabet
+            choosenLetters={this.state.letters}
+            onClick={this.handleClick} />
+
+        <Tiles
+            secretWord={this.state.secretWord}
+            guessedLetter={this.state.guessedLetter}
+            choosenLetters={this.state.letters}
+            missedLetters={this.state.missedLetters}/>
+      </div>
+    );
+  }
+}
+
+export default App;
+
+
+
 
 
 

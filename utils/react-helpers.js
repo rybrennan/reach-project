@@ -29,7 +29,7 @@ ReactHelpers.prototype.checkLetterAlgo = function (mappedWordfromState, chosenLe
     //INCORRECT ++:
     let temp = parseInt(newStep) + 1;
     newStep = temp.toString();
-    if (newStep === '6') isLoser === true
+    if (newStep === '7') isLoser === true
     callback(charOccurences, isWinner, newMappedWord, newStep, correctGuessesArray, isLoser)
   }
 }

@@ -36,18 +36,17 @@ const StyledTiles = styled.ul`
 
 const Tiles = props => {
   const secretWord = props.secretWord.split('');
-  const words = [secretWord]
+  const words = [secretWord];
 
 
   const phrase = words.map((word, i) => (
     <StyledTiles key={i}>
       {word.map((char, i) => {
-        console.log('letter ', char)
         return (
           <li
             key={i}
             className="titleLetter"
-            data-red='false'
+            data-red={props.missedLetters.includes(char) ? 'true' : 'false'}
           >
             <span className={props.choosenLetters.includes(char) ? 'visible' : ''}>
               {char}
@@ -58,7 +57,6 @@ const Tiles = props => {
       <li>&nbsp;</li>
     </StyledTiles>
   ));
-  // this goes on line 51 : {props.missedLetters.includes(letter) ? 'true' : 'false'}
   return <TilesWrapper className="title">{phrase}</TilesWrapper>;
 };
 export default Tiles;

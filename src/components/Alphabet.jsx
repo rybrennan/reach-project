@@ -22,7 +22,7 @@ li[disabled] {
 `;
 const alpha = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
-function AlphabetContainer(props) {
+function Alphabet(props) {
     return (
       <div>
         <Block>
@@ -43,7 +43,7 @@ function AlphabetContainer(props) {
     )
   }
 
-  export default AlphabetContainer;
+  export default Alphabet;
 
 
 

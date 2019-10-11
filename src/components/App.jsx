@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import $ from 'jquery';
 import Alphabet from './Alphabet';
+import Tiles from './Tiles';
 import HangmanContainer from './Hangman'
 import ReactHelpers from '../../utils/react-helpers.js';
 
@@ -15,6 +16,7 @@ class App extends React.Component {
       letters: [],
       guessedLetter: 'testing',
       mappedWord: {},
+      missedLetters: [],
       step: '1'
     }
 
@@ -65,10 +67,12 @@ class App extends React.Component {
     this.setState({
       letters: choosenLetters,
       guessedLetter: currentGuessedLetter
+
     }, () => {
       this.handleCheckLetter();
     })
   }
+
 
     handleCheckLetter() {
       let currentGuessedLetter = this.state.guessedLetter;
@@ -137,7 +141,10 @@ class App extends React.Component {
           <HangmanContainer step={this.state.step}/>
           <br />
           <br />
+
           <Alphabet choosenLetters={this.state.letters} onClick={this.handleClick} />
+
+          <Tiles secretWord={this.state.secretWord} guessedLetter={this.state.guessedLetter} choosenLetters={this.state.letters}/>
           <h1> {this.state.letters} </h1>
         </div>
       );

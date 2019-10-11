@@ -95,12 +95,15 @@ class App extends React.Component {
 
       })
       if (isWinner === true) {
-        alert('You Won the Game!');
-      } else if (isLoser === true) {
+        //refactor this to change state
+          alert('You Won the Game!');
+        } else if (isLoser === true) {
+          alert('LOZAAAA')
+        }
+      });
+    }
 
-      }
-    });
-  }
+
 
   handleAjax(setting) {
     let self = this;

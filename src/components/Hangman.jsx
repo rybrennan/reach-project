@@ -26,7 +26,7 @@ const Wrapper = styled.div`
     background-image: url(${png4});
   }
   &[data-order='5'] {
-    background-image: url(${png5});
+    background-image: url(${png4});
   }
   &[data-order='6'] {
     background-image: url(${png6});

@@ -15,7 +15,7 @@ class App extends React.Component {
       letters: [],
       guessedLetter: 'testing',
       mappedWord: {},
-      step: '3'
+      step: '4'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -76,12 +76,14 @@ class App extends React.Component {
       let choosenLetters = this.state.letters;
       let secretWord = this.state.secretWord;
       let mappedWord = this.state.mappedWord;
+      let currentStep = this.state.step;
 
-      this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, (numberOfOccurences, isWinner, newMappedWord) => {
+      this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, currentStep, (numberOfOccurences, isWinner, newMappedWord, newStep) => {
 
         this.setState({
           letters: choosenLetters,
-          mappedWord: newMappedWord
+          mappedWord: newMappedWord,
+          step: newStep
         })
         if (isWinner === true) {
           alert('You Won the Game!');

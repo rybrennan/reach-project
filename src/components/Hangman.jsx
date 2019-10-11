@@ -5,7 +5,7 @@ import png1 from '../img/1.png';
 import png2 from '../img/2.png';
 import png3 from '../img/3.png';
 import png4 from '../img/4.png';
-import PNG from '/Users/ryanbrennan/Desktop/repls/linkedin/hangman/src/img/5.png';
+import PNG from '../img/5.png';
 import PNG1 from '../img/6.png';
 import png7 from '../img/7.png';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TilesWrapper = styled.section`padding: 20px 0 0; margin:0 auto;`;
+const TilesWrapper = styled.section`padding: 20px 0 0; text-align: center`;
 const StyledTiles = styled.ul`
   display: inline-block;
   padding: 0;

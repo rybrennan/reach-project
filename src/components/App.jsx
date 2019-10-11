@@ -136,7 +136,6 @@ class App extends React.Component {
             <button onClick={() => this.handleMedium()}>Medium</button>
             <button onClick={() => this.handleSuperSmart()}>Hard</button>
           </div>
-          Guessed Letters:
           <br />
           <HangmanContainer step={this.state.step}/>
           <br />
@@ -145,7 +144,6 @@ class App extends React.Component {
           <Alphabet choosenLetters={this.state.letters} onClick={this.handleClick} />
 
           <Tiles secretWord={this.state.secretWord} guessedLetter={this.state.guessedLetter} choosenLetters={this.state.letters}/>
-          <h1> {this.state.letters} </h1>
         </div>
       );
     }

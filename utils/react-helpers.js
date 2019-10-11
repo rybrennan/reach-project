@@ -6,25 +6,31 @@ class ReactHelpers {
   }
 }
 
-ReactHelpers.prototype.checkLetterAlgo = function (mappedWordfromState, chosenLetter, currentStep, callback) {
+ReactHelpers.prototype.checkLetterAlgo = function (mappedWordfromState, chosenLetter, currentStep, correctGuesses, callback) {
   let newMappedWord = mappedWordfromState;
-  let winner = false;
+  let isWinner = false;
+  let isLoser = false;
   let charOccurences = newMappedWord[chosenLetter];
   let newStep = currentStep;
+  let correctGuessesArray = correctGuesses;
+
 
   if (!!newMappedWord[chosenLetter]) {
     delete newMappedWord[chosenLetter];
+    correctGuessesArray.push(chosenLetter);
+
     if (Object.keys(newMappedWord).length === 0) {
-      winner = true;
-      callback(charOccurences, winner, newMappedWord, newStep);
+      isWinner = true;
+      callback(charOccurences, isWinner, newMappedWord, newStep, correctGuessesArray);
     } else {
-      callback(charOccurences, winner, newMappedWord, newStep);
+      callback(charOccurences, isWinner, newMappedWord, newStep, correctGuessesArray);
     }
   } else {
     //INCORRECT ++:
     let temp = parseInt(newStep) + 1;
     newStep = temp.toString();
-    callback(charOccurences, winner, newMappedWord, newStep)
+    if (newStep === '6') isLoser === true
+    callback(charOccurences, isWinner, newMappedWord, newStep, correctGuessesArray, isLoser)
   }
 }
 

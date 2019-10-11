@@ -15,7 +15,7 @@ class App extends React.Component {
       letters: [],
       guessedLetter: 'testing',
       mappedWord: {},
-      step: 1
+      step: '3'
     }
 
     this.handleChange = this.handleChange.bind(this);

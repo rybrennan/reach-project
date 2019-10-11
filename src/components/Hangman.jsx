@@ -35,7 +35,7 @@ const Wrapper = styled.div`
     background-image: url(${png7});
   }
 `;
- {/* <Wrapper {...props} step-order={props.step} className="hangmanContainer"  */}
+
 function HangmanContainer(props) {
   return (
    <Wrapper {...props} data-order={props.step} className="hangmanContainer" />

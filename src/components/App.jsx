@@ -7,6 +7,7 @@ import Alphabet from './Alphabet';
 import Tiles from './Tiles';
 import NewGameButton from './NewGameButton';
 import HangmanContainer from './Hangman';
+import Scoreboard from './Scoreboard';
 
 const Span = styled.span`
 font-family: 'Mansalva', sans-serif;
@@ -38,8 +39,6 @@ const Name = styled.h1`
   left: 30%;
 `;
 
-
-
 const Button1 = styled.button`
   font-size: 24px;
   border: none;
@@ -63,17 +62,18 @@ const Button2 = styled.button`
   transition: all 2s linear;
   font-family: 'Mansalva', sans-serif;
   `;
+
 const Button3 = styled.button`
-  font-size: 24px;
-  border: none;
-  background: none;
-  position:absolute;
-  top: 25%;
-  right: 75%;
-  cursor: pointer;
-  transition: all 2s linear;
-  font-family: 'Mansalva', sans-serif;
-  `;
+    font-size: 24px;
+    border: none;
+    background: none;
+    position:absolute;
+    top: 25%;
+    right: 75%;
+    cursor: pointer;
+    transition: all 2s linear;
+    font-family: 'Mansalva', sans-serif;
+    `;
 
 class App extends React.Component {
   constructor(props) {
@@ -82,6 +82,7 @@ class App extends React.Component {
     this.state = {
       secretWord: 'Ryan',
       letters: [],
+      scoreboard: [],
       guessedLetter: 'testing',
       mappedWord: {},
       correctLetters: [],
@@ -102,11 +103,17 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/all')
+    let self = this
+    fetch('/scoreboard')
       .then(response => response.json())
-      .then((word) => {
+      .then((scoreboard) => {
+        console.log('I am scoreboard', scoreboard)
         this.setState({
-          secretWord: ''
+          scoreboard: scoreboard
+        }, () => {
+          self.setState({
+            scoreboard: scoreboard
+          })
         })
       })
       .catch((err) => {
@@ -116,7 +123,6 @@ class App extends React.Component {
 
   handleEasy() {
     this.handleAjax('easy');
-
   }
 
   handleMedium() {
@@ -234,6 +240,7 @@ class App extends React.Component {
       }
     });
   }
+
   handleAjax(setting) {
     let self = this;
     let difficultySetting;
@@ -300,12 +307,16 @@ class App extends React.Component {
           guessedLetter={this.state.guessedLetter}
           choosenLetters={this.state.letters}
           missedLetters={this.state.missedLetters} />
+
+        <Scoreboard score={this.state.scoreboard}/>
+
       </div>
     );
   }
 }
 
 export default App;
+
 
 
 

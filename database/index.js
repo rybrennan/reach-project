@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const config = require('./config.js');
-// const moment = require('moment');
 const con = mysql.createConnection(config);
 
 con.connect((err) => {
@@ -8,20 +7,21 @@ con.connect((err) => {
   console.log('Database Connected!!')
 })
 
-
-Database.prototype.getScoreBoard = function (callback) {
+const getScoreBoard = ((callback) => {
   let queryString = `SELECT scores.score, players.player_name, scores.date FROM scores
-                    INNER JOIN players ON scores.user_id=players.player_id
-                    ORDER BY scores.score DESC`;
+  INNER JOIN players ON scores.user_id=players.player_id
+  ORDER BY scores.score DESC`;
   con.query(queryString, (err, scoreBoard) => {
 
     if (err) throw err;
-    console.log('OMG OUR scoreboard! ', scoreBoard[0].score);
+    callback(scoreBoard)
 
   })
-}
-const test = new Database();
-test.getScoreBoard();
 
+})
+
+module.exports = {
+  getScoreBoard
+}
 
 

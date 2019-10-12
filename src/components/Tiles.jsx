@@ -34,7 +34,7 @@ const StyledTiles = styled.ul`
   }
 `;
 
-const Tiles = props => {
+const Tiles = (props) => {
   const secretWord = props.secretWord.split('');
   const words = [secretWord];
 

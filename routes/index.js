@@ -2,8 +2,12 @@ const path = require('path')
 const express = require('express');
 const router = express.Router();
 const utils = require('../utils');
-const db = require('/Users/ryanbrennan/Desktop/repls/linkedin/hangman/database/index.js');
+const bodyParser = require('body-parser');
 
+const db = require('/Users/ryanbrennan/Desktop/repls/linkedin/hangman/database/index.js');
+router.use(bodyParser.urlencoded({
+  extended: true
+}));
 //NEED TO MAKE ERROR CATCHES IN HERE
 router.get('/all', (req, res) => {
   utils.getAll((error, response) => {
@@ -26,10 +30,15 @@ router.get('/difficulty', (req, res) => {
 // @desc   when component mounts in the client, this route gets..
 // the previous high score from the mysql database
 router.get('/scoreboard', (req, res) => {
-  console.log('IN SCOREBOARD')
   db.getScoreBoard((scoreBoard) => {
     res.status(200).json(scoreBoard);
   })
+})
+
+router.post('/insertscore', (req, res) => {
+  const player = JSON.parse(Object.keys(req.body)[0])['player'];
+
+  console.log('I am the player', player)
 })
 
 

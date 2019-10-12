@@ -8,7 +8,7 @@ con.connect((err) => {
 });
 
 const getScoreBoard = ((callback) => {
-  let queryString = `SELECT scores.score, players.player_name, scores.date FROM scores
+  const queryString = `SELECT scores.score, players.player_name, scores.date FROM scores
   INNER JOIN players ON scores.user_id=players.player_id
   ORDER BY scores.score DESC`;
 
@@ -56,13 +56,9 @@ const insertScore = (playerName, score, callback) => {
 }
 
 
-insertScore('Maus', 77, (results) => {
-  console.log(results)
-})
-
-
 module.exports = {
-  getScoreBoard
+  getScoreBoard,
+  insertScore
 }
 
 

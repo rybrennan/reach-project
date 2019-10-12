@@ -91,7 +91,8 @@ class App extends React.Component {
       newGame: true,
       difficulty: '',
       score: 0,
-      numberOfOccurences: 0
+      numberOfOccurences: 0,
+      player: 'OptimusPrime'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -186,10 +187,16 @@ class App extends React.Component {
             score
           })
         }
-
       })
       if (isWinner === true) {
-        alert('You Won the Game!');
+        //insert score into database
+        let data = {player: this.state.player, score: this.state.score}
+        let headers = { headers: {'Content-Type': 'application/x-www-form-urlencoded'} }
+        axios.post('/insertscore', data, headers)
+        .then((response) => {
+          console.log(response)
+        })
+
       }
     });
   }
@@ -197,7 +204,6 @@ class App extends React.Component {
   getRemaining() {
     let correctLetters = this.state.correctLetters;
     let secretWord = this.state.secretWord;
-
     let remaining = secretWord.split('').filter((char) => {
       return !correctLetters.includes(char);
     });
@@ -275,6 +281,7 @@ class App extends React.Component {
     });
   }
 
+
   render() {
     return (
       <div className="App">
@@ -297,25 +304,25 @@ class App extends React.Component {
         />
         <br />
         <br />
-
         <Alphabet
           choosenLetters={this.state.letters}
           onClick={this.handleClick} />
-
         <Tiles
           secretWord={this.state.secretWord}
           guessedLetter={this.state.guessedLetter}
           choosenLetters={this.state.letters}
           missedLetters={this.state.missedLetters} />
-
         <Scoreboard score={this.state.scoreboard}/>
-
       </div>
     );
   }
 }
 
 export default App;
+
+
+
+
 
 
 

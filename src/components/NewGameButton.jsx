@@ -5,9 +5,10 @@ import styled from 'styled-components';
 const Button = styled.button`
   font-size: 24px;
   border: none;
+  color: blue;
   background: none;
   position:absolute;
-  top: 30%;
+  top: 50%;
   left: 60%;
   cursor: pointer;
   transition: all 2s linear;

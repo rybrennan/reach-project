@@ -107,7 +107,7 @@ class App extends React.Component {
     fetch('/scoreboard')
       .then(response => response.json())
       .then((scoreboard) => {
-        console.log('I am scoreboard', scoreboard)
+       //two setStates here bc I am running into some async issues fething from the db
         this.setState({
           scoreboard: scoreboard
         }, () => {

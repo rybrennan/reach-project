@@ -21,6 +21,15 @@ position:absolute;
 right: 30%;
 top: 15%;
 `
+const Chances = styled.h1`
+font-size: 24px;
+font-family: 'Mansalva', sans-serif;
+margin: 0;
+position:absolute;
+right: 30%;
+top: 20%;
+`;
+
 const Name = styled.h1`
   font-size: 56px;
   font-family: 'Mansalva', sans-serif;
@@ -28,6 +37,8 @@ const Name = styled.h1`
   position:absolute;
   left: 30%;
 `;
+
+
 
 const Button1 = styled.button`
   font-size: 24px;
@@ -204,7 +215,25 @@ class App extends React.Component {
     })
   }
 
+  handleClue() {
+    $.ajax({
+      url: 'http://localhost:3000/clue',
+      type: 'GET',
+      dataType: 'json',
+      data: JSON.stringify(difficultySetting),
+      contentType: 'application/json',
+      success: function (wordsArray) {
 
+        self.setState({
+          secretWord: wordsArray[0],
+          mappedWord: wordsArray[1],
+        })
+      },
+      error: function (data) {
+        console.error(`Error in handle${setting}`, data);
+      }
+    });
+  }
   handleAjax(setting) {
     let self = this;
     let difficultySetting;
@@ -244,6 +273,7 @@ class App extends React.Component {
       <div className="App">
         <Name>Hire-me Hangman 💀</Name>
         <Score>Score: {this.state.score}</Score>
+        <Chances>Chances Left: {7 - this.state.step}</Chances>
         <br />
         <br />
         <br />

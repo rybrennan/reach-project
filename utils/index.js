@@ -5,6 +5,11 @@ const http = axios.create({
   baseURL: linkedinUrl
 });
 
+const wordsUrl = `https://wordsapiv1.p.rapidapi.com`
+const http2 = axios.create({
+  baseURL: wordsUrl
+});
+
 const getAll = (callback) => {
   http.get(`${linkedinUrl}?difficulty=2&count=1`)
   .then((response) => {
@@ -16,7 +21,7 @@ const getAll = (callback) => {
     callback(error, null);
   })
 }
-
+// /words/incredible/definitions
 const mapWord = (secretWord) => {
   let map = {};
 
@@ -28,7 +33,8 @@ const mapWord = (secretWord) => {
   return map;
 }
 
-
+//queries the Linkedin API to return an array of 50 words according to difficulty
+//sends a single word back to the server as a word & mappedWord
 const getWordByDifficulty = (rating, callback) => {
   http.get(`${linkedinUrl}?difficulty=${rating}&count=50&minLength=4`)
   .then((response) => {
@@ -37,21 +43,35 @@ const getWordByDifficulty = (rating, callback) => {
     let randoWord = wordsArray[wordIdx];
     let mappedWord = mapWord(randoWord);
 
+        callback(null, [randoWord, mappedWord]);
+      })
+      .catch((error) => {
+        console.log(error, 'In /utils/index.js');
+        callback(error, null);
+      })
+    }
 
-    callback(null, [randoWord, mappedWord]);
-  })
-  .catch((error) => {
-    console.log(error, 'In /utils/index.js');
-    callback(error, null);
-  })
-}
-module.exports = {
-  getAll,
-  getWordByDifficulty,
-};
+    const getWordClue = (word, callback) => {
+      // axios.get(URL, { params:{}, headers: { 'Authorization': AuthStr } })
 
+      http2.get(`${wordsUrl}/words/${word}/definitions`, { headers: {"x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
+      "x-rapidapi-key": "oBL36Vab07mshN89Y6zhLzcGTFl2p1Rga7AjsnEoiHYwPJl0wM"} })
+      .then((res) => {
+        callback(null, res)
+      })
+      .catch((error) => {
+        console.log(error, 'In /utils/index.js');
+        callback(error, null);
+      })
+    }
+    module.exports = {
+      getAll,
+      getWordByDifficulty,
+    };
 
-
+  //  getWordClue('difficult', (results) => {
+  //    console.log(results)
+  //  })
 
 
 

@@ -5,6 +5,7 @@ import $ from 'jquery';
 import ReactHelpers from '../../utils/react-helpers.js';
 import Alphabet from './Alphabet';
 import Tiles from './Tiles';
+import NewGameButton from './NewGameButton';
 import HangmanContainer from './Hangman';
 
 class App extends React.Component {
@@ -19,12 +20,14 @@ class App extends React.Component {
       correctLetters: [],
       missedLetters: [],
       step: '1',
+      newGame: true
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleCheckLetter = this.handleCheckLetter.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.onNewGame = this.onNewGame.bind(this);
     this.reactHelpers = new ReactHelpers();
   }
 
@@ -81,6 +84,7 @@ class App extends React.Component {
     let currentStep = this.state.step;
     let correctGuesses = this.state.correctLetters;
     let self = this;
+
     this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, currentStep, correctGuesses, (numberOfOccurences, isWinner, newMappedWord, newStep, correctGuessesArray, isLoser) => {
       this.setState({
         letters: choosenLetters,
@@ -109,9 +113,25 @@ class App extends React.Component {
       });
 
      this.setState({
-       missedLetters: remaining
+       missedLetters: remaining,
+       newGame: false
+
      })
     }
+
+    onNewGame() {
+     this.setState({
+      secretWord: '',
+      letters: [],
+      guessedLetter: 'testing',
+      mappedWord: {},
+      correctLetters: [],
+      missedLetters: [],
+      step: '1',
+      newGame: true
+    })
+  }
+
     handleAjax(setting) {
      let self = this;
      let difficultySetting;
@@ -155,6 +175,10 @@ class App extends React.Component {
            <button onClick={() => this.handleSuperSmart()}>Hard</button>
          </div>
          <HangmanContainer step={this.state.step}/>
+         <NewGameButton
+                onClick={this.onNewGame}
+                newGame={this.state.newGame}
+              />
          <br />
          <br />
 

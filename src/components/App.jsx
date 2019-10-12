@@ -8,6 +8,53 @@ import Tiles from './Tiles';
 import NewGameButton from './NewGameButton';
 import HangmanContainer from './Hangman';
 
+const Span = styled.span`
+font-family: 'Mansalva', sans-serif;
+font-size: 24px;
+right: 60px;
+`
+const Name = styled.h1`
+  font-size: 56px;
+  font-family: 'Mansalva', sans-serif;
+  margin: 0;
+  position:absolute;
+  left: 30%;
+`;
+
+const Button1 = styled.button`
+  font-size: 24px;
+  border: none;
+  background: none;
+  position:absolute;
+  top: 15%;
+  right: 75%;
+  cursor: pointer;
+  transition: all 2s linear;
+  font-family: 'Mansalva', sans-serif;
+  `;
+  const Button2 = styled.button`
+  font-size: 24px;
+  border: none;
+  background: none;
+  position:absolute;
+  top: 20%;
+  right: 75%;
+  cursor: pointer;
+  transition: all 2s linear;
+  font-family: 'Mansalva', sans-serif;
+  `;
+  const Button3 = styled.button`
+  font-size: 24px;
+  border: none;
+  background: none;
+  position:absolute;
+  top: 25%;
+  right: 75%;
+  cursor: pointer;
+  transition: all 2s linear;
+  font-family: 'Mansalva', sans-serif;
+  `;
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -166,13 +213,17 @@ class App extends React.Component {
    render() {
      return (
        <div className="App">
-         {/* <Name>Hire-me Hangman 💀</Name> */}
+         <Name>Hire-me Hangman 💀</Name>
+         <br />
+         <br />
          <br />
          <div>
-           Pick your poison:
-           <button onClick={() => this.handleEasy()}>Easy Peezy</button>
-           <button onClick={() => this.handleMedium()}>Medium</button>
-           <button onClick={() => this.handleSuperSmart()}>Hard</button>
+           <Span>First, Pick your poison:</Span>
+           <Button1  onClick={() => this.handleEasy()}>Easy</Button1>
+           <Button2 onClick={() => this.handleMedium()}>Medium</Button2>
+           <Button3 onClick={() => this.handleSuperSmart()}>Hard</Button3>
+           {/* /* <button onClick={() => this.handleMedium()}>Medium</button> */}
+           {/* <button onClick={() => this.handleSuperSmart()}>Hard</button>  */}
          </div>
          <HangmanContainer step={this.state.step}/>
          <NewGameButton

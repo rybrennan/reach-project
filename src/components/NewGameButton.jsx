@@ -6,7 +6,9 @@ const Button = styled.button`
   font-size: 24px;
   border: none;
   background: none;
-  position: relative;
+  position:absolute;
+  top: 20%;
+  left: 70%;
   cursor: pointer;
   transition: all 2s linear;
   display: ${props => (props.newGame ? 'none' : 'block')};

@@ -31,8 +31,9 @@ const Button1 = styled.button`
   cursor: pointer;
   transition: all 2s linear;
   font-family: 'Mansalva', sans-serif;
+
   `;
-  const Button2 = styled.button`
+const Button2 = styled.button`
   font-size: 24px;
   border: none;
   background: none;
@@ -43,7 +44,7 @@ const Button1 = styled.button`
   transition: all 2s linear;
   font-family: 'Mansalva', sans-serif;
   `;
-  const Button3 = styled.button`
+const Button3 = styled.button`
   font-size: 24px;
   border: none;
   background: none;
@@ -67,7 +68,9 @@ class App extends React.Component {
       correctLetters: [],
       missedLetters: [],
       step: '1',
-      newGame: true
+      newGame: true,
+      difficulty: '',
+      score: 0
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -93,6 +96,7 @@ class App extends React.Component {
 
   handleEasy() {
     this.handleAjax('easy');
+
   }
 
   handleMedium() {
@@ -140,34 +144,46 @@ class App extends React.Component {
         correctLetters: correctGuessesArray,
       }, () => {
         //GAME OVER HERE!!
+        let score = self.state.score
+
         if (self.state.step === '7') {
           self.getRemaining();
         }
+        if (self.state.secretWord.includes(self.state.guessedLetter)) {
+          score += 2;
+          self.setState({
+            score
+          })
+        } else if (!self.state.secretWord.includes(self.state.guessedLetter)) {
+          score - 1 >= 0 ? score = score - 1 : score = 0;
+          self.setState({
+            score
+          })
+        }
+
       })
       if (isWinner === true) {
-        //refactor this to change state
-          alert('You Won the Game!');
-        }
-      });
-    }
-    //GAME OVER
-    getRemaining() {
-      let correctLetters = this.state.correctLetters;
-      let secretWord =  this.state.secretWord;
+        alert('You Won the Game!');
+      }
+    });
+  }
+  //GAME OVER
+  getRemaining() {
+    let correctLetters = this.state.correctLetters;
+    let secretWord = this.state.secretWord;
 
-      let remaining = secretWord.split('').filter((char) => {
-        return !correctLetters.includes(char);
-      });
+    let remaining = secretWord.split('').filter((char) => {
+      return !correctLetters.includes(char);
+    });
 
-     this.setState({
-       missedLetters: remaining,
-       newGame: false
+    this.setState({
+      missedLetters: remaining,
+      newGame: false
+    })
+  }
 
-     })
-    }
-
-    onNewGame() {
-     this.setState({
+  onNewGame() {
+    this.setState({
       secretWord: '',
       letters: [],
       guessedLetter: 'testing',
@@ -179,82 +195,77 @@ class App extends React.Component {
     })
   }
 
-    handleAjax(setting) {
-     let self = this;
-     let difficultySetting;
 
-     if (setting === 'easy') {
-       difficultySetting = Math.floor(Math.random() * (4 - 1 + 1) + 1);
-     } else if (setting === 'medium') {
-       difficultySetting = Math.floor(Math.random() * (7 - 5 + 1) + 5);
-     } else {
-       difficultySetting = Math.floor(Math.random() * (10 - 8 + 1) + 8);
-     }
+  handleAjax(setting) {
+    let self = this;
+    let difficultySetting;
 
-     $.ajax({
-       url: 'http://localhost:3000/difficulty',
-       type: 'GET',
-       dataType: 'json',
-       data: JSON.stringify(difficultySetting),
-       contentType: 'application/json',
-       success: function (wordsArray) {
+    if (setting === 'easy') {
+      difficultySetting = Math.floor(Math.random() * (4 - 1 + 1) + 1);
+    } else if (setting === 'medium') {
+      difficultySetting = Math.floor(Math.random() * (7 - 5 + 1) + 5);
+    } else {
+      difficultySetting = Math.floor(Math.random() * (10 - 8 + 1) + 8);
+    }
+    this.setState({
+      difficulty: setting
+    })
 
-         self.setState({
-           secretWord: wordsArray[0],
-           mappedWord: wordsArray[1],
-         })
-       },
-       error: function (data) {
-         console.error('Error in handleEasy', data);
-       }
-     });
-   }
+    $.ajax({
+      url: 'http://localhost:3000/difficulty',
+      type: 'GET',
+      dataType: 'json',
+      data: JSON.stringify(difficultySetting),
+      contentType: 'application/json',
+      success: function (wordsArray) {
 
-   render() {
-     return (
-       <div className="App">
-         <Name>Hire-me Hangman 💀</Name>
-         <br />
-         <br />
-         <br />
-         <div>
-           <Span>First, Pick your poison:</Span>
-           <Button1  onClick={() => this.handleEasy()}>Easy</Button1>
-           <Button2 onClick={() => this.handleMedium()}>Medium</Button2>
-           <Button3 onClick={() => this.handleSuperSmart()}>Hard</Button3>
-           {/* /* <button onClick={() => this.handleMedium()}>Medium</button> */}
-           {/* <button onClick={() => this.handleSuperSmart()}>Hard</button>  */}
-         </div>
-         <HangmanContainer step={this.state.step}/>
-         <NewGameButton
-                onClick={this.onNewGame}
-                newGame={this.state.newGame}
-              />
-         <br />
-         <br />
+        self.setState({
+          secretWord: wordsArray[0],
+          mappedWord: wordsArray[1],
+        })
+      },
+      error: function (data) {
+        console.error('Error in handleEasy', data);
+      }
+    });
+  }
 
-         <Alphabet
-             choosenLetters={this.state.letters}
-             onClick={this.handleClick} />
+  render() {
+    return (
+      <div className="App">
+        <Name>Hire-me Hangman 💀</Name>
+        <br />
+        <br />
+        <br />
+        <div>
+          <Span>First, Pick your poison:</Span>
+          <Button1 onClick={() => this.handleEasy()}>Easy</Button1>
+          <Button2 onClick={() => this.handleMedium()}>Medium</Button2>
+          <Button3 onClick={() => this.handleSuperSmart()}>Hard</Button3>
+        </div>
+        <HangmanContainer step={this.state.step} />
+        <NewGameButton
+          onClick={this.onNewGame}
+          newGame={this.state.newGame}
+        />
+        <br />
+        <br />
 
-         <Tiles
-             secretWord={this.state.secretWord}
-             guessedLetter={this.state.guessedLetter}
-             choosenLetters={this.state.letters}
-             missedLetters={this.state.missedLetters}/>
-       </div>
-     );
-   }
- }
+        <Alphabet
+          choosenLetters={this.state.letters}
+          onClick={this.handleClick} />
 
- export default App;
+        <Tiles
+          secretWord={this.state.secretWord}
+          guessedLetter={this.state.guessedLetter}
+          choosenLetters={this.state.letters}
+          missedLetters={this.state.missedLetters} />
+      </div>
+    );
+  }
+}
 
-
-// const Name = styled.h1`
-//   font-size: 56px;
-//   font-family: 'Mansalva', sans-serif;
-//   margin: 0;
-// `;
+export default App;
 
 
 

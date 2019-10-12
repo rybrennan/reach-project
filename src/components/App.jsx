@@ -78,7 +78,8 @@ class App extends React.Component {
       step: '1',
       newGame: true,
       difficulty: '',
-      score: 0
+      score: 0,
+      numberOfOccurences: 0
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -150,6 +151,7 @@ class App extends React.Component {
         mappedWord: newMappedWord,
         step: newStep,
         correctLetters: correctGuessesArray,
+        numberOfOccurences: numberOfOccurences
       }, () => {
         let score = self.state.score
 
@@ -157,7 +159,7 @@ class App extends React.Component {
           self.getRemaining();
         }
         if (self.state.secretWord.includes(self.state.guessedLetter)) {
-          score += 2;
+          score += 2 * self.state.numberOfOccurences;
           self.setState({
             score
           })

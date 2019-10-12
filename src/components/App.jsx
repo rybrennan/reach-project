@@ -13,6 +13,14 @@ font-family: 'Mansalva', sans-serif;
 font-size: 24px;
 right: 60px;
 `
+const Score = styled.h1`
+font-size: 24px;
+font-family: 'Mansalva', sans-serif;
+margin: 0;
+position:absolute;
+right: 30%;
+top: 15%;
+`
 const Name = styled.h1`
   font-size: 56px;
   font-family: 'Mansalva', sans-serif;
@@ -143,7 +151,6 @@ class App extends React.Component {
         step: newStep,
         correctLetters: correctGuessesArray,
       }, () => {
-        //GAME OVER HERE!!
         let score = self.state.score
 
         if (self.state.step === '7') {
@@ -225,7 +232,7 @@ class App extends React.Component {
         })
       },
       error: function (data) {
-        console.error('Error in handleEasy', data);
+        console.error(`Error in handle${setting}`, data);
       }
     });
   }
@@ -234,6 +241,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Name>Hire-me Hangman 💀</Name>
+        <Score>Score: {this.state.score}</Score>
         <br />
         <br />
         <br />

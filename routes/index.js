@@ -35,10 +35,15 @@ router.get('/scoreboard', (req, res) => {
   })
 })
 
+// @route  POST /insertscore
+// @desc   Inserts a score into the database with db.insertScore
 router.post('/insertscore', (req, res) => {
   const player = JSON.parse(Object.keys(req.body)[0])['player'];
+  const score =  JSON.parse(Object.keys(req.body)[0])['score'];
 
-  console.log('I am the player', player)
+  db.insertScore(player, score, (updatedScoreBoard) => {
+    res.status(200).json(updatedScoreBoard)
+  })
 })
 
 

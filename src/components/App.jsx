@@ -194,7 +194,7 @@ class App extends React.Component {
         let headers = { headers: {'Content-Type': 'application/x-www-form-urlencoded'} }
         axios.post('/insertscore', data, headers)
         .then((response) => {
-          console.log(response)
+          console.log('We have scoreboard in the client', response.data)
         })
 
       }

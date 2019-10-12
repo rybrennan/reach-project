@@ -20,20 +20,18 @@ const getScoreBoard = ((callback) => {
 
 const insertScore = (playerName, score, callback) => {
   const queryCheckifPlayerExists = `SELECT * FROM players where player_name='${playerName}'`;
-  //first check if player exists
   con.query(queryCheckifPlayerExists, (err, results) => {
     if (err) throw err;
-    //if player DOES NOT exist -
+    //if player DOES NOT exist, we need to first insert into the PLAYERS table
+    // then use user_id to insert into the SCORES table
     if (results.length === 0) {
       const queryInsertNewPlayer = `INSERT INTO players (player_name) VALUES ('${playerName}');`;
 
       con.query(queryInsertNewPlayer, (err, results) => {
         if (err) throw err;
-        //We have our new insert id/user_id
         const userId = results.insertId;
         const queryInsertNewScore = `INSERT INTO scores (user_id, score, date) VALUES (${userId}, ${score}, "10/01/2019");`;
         con.query(queryInsertNewScore, (err, results) => {
-
           getScoreBoard((updatedBoard) => {
             const topFive = updatedBoard.slice(0,5);
             callback(topFive)
@@ -41,10 +39,8 @@ const insertScore = (playerName, score, callback) => {
         })
       })
     } else {
-      //player DOES EXIST
       const userId = results.player_id;
       const queryInsertNewScore = `INSERT INTO scores (user_id, score, date) VALUES (${userId}, ${score}, "10/01/2019");`;
-
       con.query(queryInsertNewScore, (err, results) => {
         getScoreBoard((updatedBoard) => {
           const topFive = updatedBoard.slice(0,5);
@@ -54,6 +50,8 @@ const insertScore = (playerName, score, callback) => {
     }
   })
 }
+
+
 
 
 module.exports = {

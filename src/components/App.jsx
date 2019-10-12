@@ -5,7 +5,64 @@ import $ from 'jquery';
 import ReactHelpers from '../../utils/react-helpers.js';
 import Alphabet from './Alphabet';
 import Tiles from './Tiles';
+import NewGameButton from './NewGameButton';
 import HangmanContainer from './Hangman';
+
+const Span = styled.span`
+font-family: 'Mansalva', sans-serif;
+font-size: 24px;
+right: 60px;
+`
+const Score = styled.h1`
+font-size: 24px;
+font-family: 'Mansalva', sans-serif;
+margin: 0;
+position:absolute;
+right: 30%;
+top: 15%;
+`
+const Name = styled.h1`
+  font-size: 56px;
+  font-family: 'Mansalva', sans-serif;
+  margin: 0;
+  position:absolute;
+  left: 30%;
+`;
+
+const Button1 = styled.button`
+  font-size: 24px;
+  border: none;
+  background: none;
+  position:absolute;
+  top: 15%;
+  right: 75%;
+  cursor: pointer;
+  transition: all 2s linear;
+  font-family: 'Mansalva', sans-serif;
+
+  `;
+const Button2 = styled.button`
+  font-size: 24px;
+  border: none;
+  background: none;
+  position:absolute;
+  top: 20%;
+  right: 75%;
+  cursor: pointer;
+  transition: all 2s linear;
+  font-family: 'Mansalva', sans-serif;
+  `;
+const Button3 = styled.button`
+  font-size: 24px;
+  border: none;
+  background: none;
+  position:absolute;
+  top: 25%;
+  right: 75%;
+  cursor: pointer;
+  transition: all 2s linear;
+  font-family: 'Mansalva', sans-serif;
+  `;
 
 class App extends React.Component {
   constructor(props) {
@@ -19,12 +76,16 @@ class App extends React.Component {
       correctLetters: [],
       missedLetters: [],
       step: '1',
+      newGame: true,
+      difficulty: '',
+      score: 0
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleCheckLetter = this.handleCheckLetter.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.onNewGame = this.onNewGame.bind(this);
     this.reactHelpers = new ReactHelpers();
   }
 
@@ -43,6 +104,7 @@ class App extends React.Component {
 
   handleEasy() {
     this.handleAjax('easy');
+
   }
 
   handleMedium() {
@@ -81,6 +143,7 @@ class App extends React.Component {
     let currentStep = this.state.step;
     let correctGuesses = this.state.correctLetters;
     let self = this;
+
     this.reactHelpers.checkLetterAlgo(mappedWord, currentGuessedLetter, currentStep, correctGuesses, (numberOfOccurences, isWinner, newMappedWord, newStep, correctGuessesArray, isLoser) => {
       this.setState({
         letters: choosenLetters,
@@ -88,98 +151,129 @@ class App extends React.Component {
         step: newStep,
         correctLetters: correctGuessesArray,
       }, () => {
-        //GAME OVER HERE!!
+        let score = self.state.score
+
         if (self.state.step === '7') {
           self.getRemaining();
         }
+        if (self.state.secretWord.includes(self.state.guessedLetter)) {
+          score += 2;
+          self.setState({
+            score
+          })
+        } else if (!self.state.secretWord.includes(self.state.guessedLetter)) {
+          score - 1 >= 0 ? score = score - 1 : score = 0;
+          self.setState({
+            score
+          })
+        }
+
       })
       if (isWinner === true) {
-        //refactor this to change state
-          alert('You Won the Game!');
-        }
-      });
+        alert('You Won the Game!');
+      }
+    });
+  }
+  //GAME OVER
+  getRemaining() {
+    let correctLetters = this.state.correctLetters;
+    let secretWord = this.state.secretWord;
+
+    let remaining = secretWord.split('').filter((char) => {
+      return !correctLetters.includes(char);
+    });
+
+    this.setState({
+      missedLetters: remaining,
+      newGame: false
+    })
+  }
+
+  onNewGame() {
+    this.setState({
+      secretWord: '',
+      letters: [],
+      guessedLetter: 'testing',
+      mappedWord: {},
+      correctLetters: [],
+      missedLetters: [],
+      step: '1',
+      newGame: true
+    })
+  }
+
+
+  handleAjax(setting) {
+    let self = this;
+    let difficultySetting;
+
+    if (setting === 'easy') {
+      difficultySetting = Math.floor(Math.random() * (4 - 1 + 1) + 1);
+    } else if (setting === 'medium') {
+      difficultySetting = Math.floor(Math.random() * (7 - 5 + 1) + 5);
+    } else {
+      difficultySetting = Math.floor(Math.random() * (10 - 8 + 1) + 8);
     }
-    //GAME OVER
-    getRemaining() {
-      let correctLetters = this.state.correctLetters;
-      let secretWord =  this.state.secretWord;
+    this.setState({
+      difficulty: setting
+    })
 
-      let remaining = secretWord.split('').filter((char) => {
-        return !correctLetters.includes(char);
-      });
+    $.ajax({
+      url: 'http://localhost:3000/difficulty',
+      type: 'GET',
+      dataType: 'json',
+      data: JSON.stringify(difficultySetting),
+      contentType: 'application/json',
+      success: function (wordsArray) {
 
-     this.setState({
-       missedLetters: remaining
-     })
-    }
-    handleAjax(setting) {
-     let self = this;
-     let difficultySetting;
+        self.setState({
+          secretWord: wordsArray[0],
+          mappedWord: wordsArray[1],
+        })
+      },
+      error: function (data) {
+        console.error(`Error in handle${setting}`, data);
+      }
+    });
+  }
 
-     if (setting === 'easy') {
-       difficultySetting = Math.floor(Math.random() * (4 - 1 + 1) + 1);
-     } else if (setting === 'medium') {
-       difficultySetting = Math.floor(Math.random() * (7 - 5 + 1) + 5);
-     } else {
-       difficultySetting = Math.floor(Math.random() * (10 - 8 + 1) + 8);
-     }
+  render() {
+    return (
+      <div className="App">
+        <Name>Hire-me Hangman 💀</Name>
+        <Score>Score: {this.state.score}</Score>
+        <br />
+        <br />
+        <br />
+        <div>
+          <Span>First, Pick your poison:</Span>
+          <Button1 onClick={() => this.handleEasy()}>Easy</Button1>
+          <Button2 onClick={() => this.handleMedium()}>Medium</Button2>
+          <Button3 onClick={() => this.handleSuperSmart()}>Hard</Button3>
+        </div>
+        <HangmanContainer step={this.state.step} />
+        <NewGameButton
+          onClick={this.onNewGame}
+          newGame={this.state.newGame}
+        />
+        <br />
+        <br />
 
-     $.ajax({
-       url: 'http://localhost:3000/difficulty',
-       type: 'GET',
-       dataType: 'json',
-       data: JSON.stringify(difficultySetting),
-       contentType: 'application/json',
-       success: function (wordsArray) {
+        <Alphabet
+          choosenLetters={this.state.letters}
+          onClick={this.handleClick} />
 
-         self.setState({
-           secretWord: wordsArray[0],
-           mappedWord: wordsArray[1],
-         })
-       },
-       error: function (data) {
-         console.error('Error in handleEasy', data);
-       }
-     });
-   }
+        <Tiles
+          secretWord={this.state.secretWord}
+          guessedLetter={this.state.guessedLetter}
+          choosenLetters={this.state.letters}
+          missedLetters={this.state.missedLetters} />
+      </div>
+    );
+  }
+}
 
-   render() {
-     return (
-       <div className="App">
-         {/* <Name>Hire-me Hangman 💀</Name> */}
-         <br />
-         <div>
-           Pick your poison:
-           <button onClick={() => this.handleEasy()}>Easy Peezy</button>
-           <button onClick={() => this.handleMedium()}>Medium</button>
-           <button onClick={() => this.handleSuperSmart()}>Hard</button>
-         </div>
-         <HangmanContainer step={this.state.step}/>
-         <br />
-         <br />
-
-         <Alphabet
-             choosenLetters={this.state.letters}
-             onClick={this.handleClick} />
-
-         <Tiles
-             secretWord={this.state.secretWord}
-             guessedLetter={this.state.guessedLetter}
-             choosenLetters={this.state.letters}
-             missedLetters={this.state.missedLetters}/>
-       </div>
-     );
-   }
- }
-
- export default App;
-
-
-// const Name = styled.h1`
-//   font-size: 56px;
-//   font-family: 'Mansalva', sans-serif;
-//   margin: 0;
-// `;
+export default App;
 
 
 

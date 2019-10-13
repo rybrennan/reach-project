@@ -92,7 +92,7 @@ class App extends React.Component {
       difficulty: '',
       score: 0,
       numberOfOccurences: 0,
-      player: 'OptimusPrime'
+      player: 'Dino'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -194,6 +194,9 @@ class App extends React.Component {
         let headers = { headers: {'Content-Type': 'application/x-www-form-urlencoded'} }
         axios.post('/insertscore', data, headers)
         .then((response) => {
+          this.setState({
+            scoreboard: response.data
+          })
           console.log('We have scoreboard in the client', response.data)
         })
 

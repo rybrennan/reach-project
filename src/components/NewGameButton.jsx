@@ -5,10 +5,11 @@ import styled from 'styled-components';
 const Button = styled.button`
   font-size: 24px;
   border: none;
+  color: blue;
   background: none;
   position:absolute;
-  top: 20%;
-  left: 70%;
+  top: 40%;
+  right: 70%;
   cursor: pointer;
   transition: all 2s linear;
   display: ${props => (props.newGame ? 'none' : 'block')};

@@ -7,12 +7,31 @@ import Alphabet from './Alphabet';
 import Tiles from './Tiles';
 import NewGameButton from './NewGameButton';
 import HangmanContainer from './Hangman';
+import Scoreboard from './Scoreboard';
 
-const Span = styled.span`
-font-family: 'Mansalva', sans-serif;
+const Pick = styled.h1`
 font-size: 24px;
-right: 60px;
+font-family: 'Mansalva', sans-serif;
+margin: 0;
+position:absolute;
+top: 10%;
+right: 75%;
 `
+
+const Input = styled.input`
+font-size: 20px;
+  padding: 0.5em;
+  margin: 0.5em;
+  margin-left: 200px;
+
+  background: papayawhip;
+  border: none;
+  border-radius: 3px;
+  top: 5%;
+  right: 75%;
+  font-family: 'Mansalva', sans-serif;
+`;
+
 const Score = styled.h1`
 font-size: 24px;
 font-family: 'Mansalva', sans-serif;
@@ -21,6 +40,15 @@ position:absolute;
 right: 30%;
 top: 15%;
 `
+const Chances = styled.h1`
+font-size: 24px;
+font-family: 'Mansalva', sans-serif;
+margin: 0;
+position:absolute;
+right: 30%;
+top: 20%;
+`;
+
 const Name = styled.h1`
   font-size: 56px;
   font-family: 'Mansalva', sans-serif;
@@ -52,17 +80,18 @@ const Button2 = styled.button`
   transition: all 2s linear;
   font-family: 'Mansalva', sans-serif;
   `;
+
 const Button3 = styled.button`
-  font-size: 24px;
-  border: none;
-  background: none;
-  position:absolute;
-  top: 25%;
-  right: 75%;
-  cursor: pointer;
-  transition: all 2s linear;
-  font-family: 'Mansalva', sans-serif;
-  `;
+    font-size: 24px;
+    border: none;
+    background: none;
+    position:absolute;
+    top: 25%;
+    right: 75%;
+    cursor: pointer;
+    transition: all 2s linear;
+    font-family: 'Mansalva', sans-serif;
+    `;
 
 class App extends React.Component {
   constructor(props) {
@@ -71,6 +100,7 @@ class App extends React.Component {
     this.state = {
       secretWord: 'Ryan',
       letters: [],
+      scoreboard: [],
       guessedLetter: 'testing',
       mappedWord: {},
       correctLetters: [],
@@ -79,7 +109,8 @@ class App extends React.Component {
       newGame: true,
       difficulty: '',
       score: 0,
-      numberOfOccurences: 0
+      numberOfOccurences: 0,
+      player: 'OptimusPrime'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -91,11 +122,17 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/all')
+    let self = this
+    fetch('/scoreboard')
       .then(response => response.json())
-      .then((word) => {
+      .then((scoreboard) => {
+       //two setStates here bc I am running into some async issues fething from the db
         this.setState({
-          secretWord: ''
+          scoreboard: scoreboard
+        }, () => {
+          self.setState({
+            scoreboard: scoreboard
+          })
         })
       })
       .catch((err) => {
@@ -105,7 +142,6 @@ class App extends React.Component {
 
   handleEasy() {
     this.handleAjax('easy');
-
   }
 
   handleMedium() {
@@ -169,10 +205,20 @@ class App extends React.Component {
             score
           })
         }
-
       })
       if (isWinner === true) {
-        alert('You Won the Game!');
+        //insert score into database
+        let data = {player: this.state.player, score: this.state.score}
+        let headers = { headers: {'Content-Type': 'application/x-www-form-urlencoded'} }
+        axios.post('/insertscore', data, headers)
+        .then((response) => {
+          this.setState({
+            scoreboard: response.data,
+            newGame: false,
+            score: 0
+          })
+        })
+
       }
     });
   }
@@ -180,7 +226,6 @@ class App extends React.Component {
   getRemaining() {
     let correctLetters = this.state.correctLetters;
     let secretWord = this.state.secretWord;
-
     let remaining = secretWord.split('').filter((char) => {
       return !correctLetters.includes(char);
     });
@@ -204,6 +249,25 @@ class App extends React.Component {
     })
   }
 
+  handleClue() {
+    $.ajax({
+      url: 'http://localhost:3000/clue',
+      type: 'GET',
+      dataType: 'json',
+      data: JSON.stringify(difficultySetting),
+      contentType: 'application/json',
+      success: function (wordsArray) {
+
+        self.setState({
+          secretWord: wordsArray[0],
+          mappedWord: wordsArray[1],
+        })
+      },
+      error: function (data) {
+        console.error(`Error in handle${setting}`, data);
+      }
+    });
+  }
 
   handleAjax(setting) {
     let self = this;
@@ -239,20 +303,35 @@ class App extends React.Component {
     });
   }
 
+
   render() {
     return (
       <div className="App">
         <Name>Hire-me Hangman 💀</Name>
+
+
+        <Input placeholder='1)Enter Name' onChange={this.handleChange} name='player'></Input>
+
         <Score>Score: {this.state.score}</Score>
+        <Chances>Chances Left: {7 - this.state.step}</Chances>
         <br />
         <br />
         <br />
+          <Pick>2)Pick your poison:</Pick>
         <div>
-          <Span>First, Pick your poison:</Span>
+
+
           <Button1 onClick={() => this.handleEasy()}>Easy</Button1>
           <Button2 onClick={() => this.handleMedium()}>Medium</Button2>
           <Button3 onClick={() => this.handleSuperSmart()}>Hard</Button3>
         </div>
+
+
+
+
+
+
+
         <HangmanContainer step={this.state.step} />
         <NewGameButton
           onClick={this.onNewGame}
@@ -260,22 +339,26 @@ class App extends React.Component {
         />
         <br />
         <br />
-
         <Alphabet
           choosenLetters={this.state.letters}
           onClick={this.handleClick} />
-
         <Tiles
           secretWord={this.state.secretWord}
           guessedLetter={this.state.guessedLetter}
           choosenLetters={this.state.letters}
           missedLetters={this.state.missedLetters} />
+        <Scoreboard score={this.state.scoreboard}/>
       </div>
     );
   }
 }
 
 export default App;
+
+
+
+
+
 
 
 

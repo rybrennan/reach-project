@@ -27,10 +27,10 @@ INSERT INTO players (player_name) VALUES ('Gene');
 
 
 
-INSERT INTO scores (user_id, score, date) VALUES (2, 125, "10/01/2019");
-INSERT INTO scores (user_id, score, date) VALUES (4, 85, "10/02/2019");
-INSERT INTO scores (user_id, score, date) VALUES (1, 30, "10/03/2019");
-INSERT INTO scores (user_id, score, date) VALUES (1, 210, "10/04/2019");
-INSERT INTO scores (user_id, score, date) VALUES (3, 50, "10/05/2019");
+INSERT INTO scores (user_id, score, date) VALUES (2, 20, "10/01/2019");
+INSERT INTO scores (user_id, score, date) VALUES (4, 10, "10/02/2019");
+INSERT INTO scores (user_id, score, date) VALUES (1, 25, "10/03/2019");
+INSERT INTO scores (user_id, score, date) VALUES (1, 5, "10/04/2019");
+INSERT INTO scores (user_id, score, date) VALUES (3, 12, "10/05/2019");
 
 

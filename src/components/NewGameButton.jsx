@@ -8,8 +8,8 @@ const Button = styled.button`
   color: blue;
   background: none;
   position:absolute;
-  top: 50%;
-  left: 60%;
+  top: 40%;
+  right: 70%;
   cursor: pointer;
   transition: all 2s linear;
   display: ${props => (props.newGame ? 'none' : 'block')};

@@ -9,18 +9,26 @@ import NewGameButton from './NewGameButton';
 import HangmanContainer from './Hangman';
 import Scoreboard from './Scoreboard';
 
-const Span = styled.span`
-font-family: 'Mansalva', sans-serif;
+const Pick = styled.h1`
 font-size: 24px;
-right: 60px;
+font-family: 'Mansalva', sans-serif;
+margin: 0;
+position:absolute;
+top: 10%;
+right: 75%;
 `
 
 const Input = styled.input`
+font-size: 20px;
   padding: 0.5em;
   margin: 0.5em;
+  margin-left: 200px;
+
   background: papayawhip;
   border: none;
   border-radius: 3px;
+  top: 5%;
+  right: 75%;
   font-family: 'Mansalva', sans-serif;
 `;
 
@@ -102,7 +110,7 @@ class App extends React.Component {
       difficulty: '',
       score: 0,
       numberOfOccurences: 0,
-      player: 'Dino'
+      player: 'OptimusPrime'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -205,9 +213,10 @@ class App extends React.Component {
         axios.post('/insertscore', data, headers)
         .then((response) => {
           this.setState({
-            scoreboard: response.data
+            scoreboard: response.data,
+            newGame: false,
+            score: 0
           })
-          console.log('We have scoreboard in the client', response.data)
         })
 
       }
@@ -299,18 +308,30 @@ class App extends React.Component {
     return (
       <div className="App">
         <Name>Hire-me Hangman 💀</Name>
-        <Input placeholder='1) First Enter Name' onChange={this.handleChange} name='player'></Input>
+
+
+        <Input placeholder='1)Enter Name' onChange={this.handleChange} name='player'></Input>
+
         <Score>Score: {this.state.score}</Score>
         <Chances>Chances Left: {7 - this.state.step}</Chances>
         <br />
         <br />
         <br />
+          <Pick>2)Pick your poison:</Pick>
         <div>
-          <Span>First, Pick your poison:</Span>
+
+
           <Button1 onClick={() => this.handleEasy()}>Easy</Button1>
           <Button2 onClick={() => this.handleMedium()}>Medium</Button2>
           <Button3 onClick={() => this.handleSuperSmart()}>Hard</Button3>
         </div>
+
+
+
+
+
+
+
         <HangmanContainer step={this.state.step} />
         <NewGameButton
           onClick={this.onNewGame}

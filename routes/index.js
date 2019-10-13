@@ -4,7 +4,7 @@ const router = express.Router();
 const utils = require('../utils');
 const bodyParser = require('body-parser');
 
-const db = require('/Users/ryanbrennan/Desktop/repls/linkedin/hangman/database/index.js');
+const db = require('../database/index.js');
 router.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -22,10 +22,12 @@ router.get('/difficulty', (req, res) => {
   let difficultySetting = parseInt(req._parsedOriginalUrl.query);
 
   utils.getWordByDifficulty(difficultySetting, (error, response) => {
+    if (error) {
+      res.status(404).json('Error in fetching word');
+    }
     res.status(200).json(response);
   });
 });
-
 // @route  GET /scoreboard
 // @desc   when component mounts in the client, this route gets..
 // the previous high score from the mysql database
@@ -34,7 +36,6 @@ router.get('/scoreboard', (req, res) => {
     res.status(200).json(scoreBoard);
   })
 })
-
 // @route  POST /insertscore
 // @desc   Inserts a score into the database with db.insertScore
 router.post('/insertscore', (req, res) => {
@@ -46,8 +47,10 @@ router.post('/insertscore', (req, res) => {
   })
 })
 
-
 module.exports = router;
+
+
+
 
 
 

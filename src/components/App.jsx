@@ -14,6 +14,16 @@ font-family: 'Mansalva', sans-serif;
 font-size: 24px;
 right: 60px;
 `
+
+const Input = styled.input`
+  padding: 0.5em;
+  margin: 0.5em;
+  background: papayawhip;
+  border: none;
+  border-radius: 3px;
+  font-family: 'Mansalva', sans-serif;
+`;
+
 const Score = styled.h1`
 font-size: 24px;
 font-family: 'Mansalva', sans-serif;
@@ -289,6 +299,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Name>Hire-me Hangman 💀</Name>
+        <Input placeholder='1) First Enter Name' onChange={this.handleChange} name='player'></Input>
         <Score>Score: {this.state.score}</Score>
         <Chances>Chances Left: {7 - this.state.step}</Chances>
         <br />

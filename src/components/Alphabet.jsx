@@ -6,6 +6,7 @@ padding: 0;
 
 list-style-type: none;
 display:table; margin:0 auto;
+font-family: 'Mansalva', sans-serif;
 li {
   cursor: pointer;
   margin-right: 11px;

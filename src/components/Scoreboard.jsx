@@ -10,8 +10,6 @@ const StyledScores = styled.ul`
   left: 60%;
   `;
 
-
-
 const Scoreboard = (props) => {
   let place = 0;
   return (
@@ -26,7 +24,7 @@ const Scoreboard = (props) => {
       })}
     </StyledScores>
   )
-}
+};
 
 export default Scoreboard;
 

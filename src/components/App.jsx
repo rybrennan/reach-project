@@ -126,7 +126,7 @@ class App extends React.Component {
     fetch('/scoreboard')
       .then(response => response.json())
       .then((scoreboard) => {
-       //two setStates here bc I am running into some async issues fething from the db
+        //two setStates here bc I am running into some async issues fething from the db
         this.setState({
           scoreboard: scoreboard
         }, () => {
@@ -163,7 +163,6 @@ class App extends React.Component {
     let choosenLetters = this.state.letters;
 
     choosenLetters = choosenLetters.concat(currentGuessedLetter);
-
     this.setState({
       letters: choosenLetters,
       guessedLetter: currentGuessedLetter
@@ -207,22 +206,19 @@ class App extends React.Component {
         }
       })
       if (isWinner === true) {
-        //insert score into database
-        let data = {player: this.state.player, score: this.state.score}
-        let headers = { headers: {'Content-Type': 'application/x-www-form-urlencoded'} }
+        let data = { player: this.state.player, score: this.state.score }
+        let headers = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
         axios.post('/insertscore', data, headers)
-        .then((response) => {
-          this.setState({
-            scoreboard: response.data,
-            newGame: false,
-            score: 0
+          .then((response) => {
+            this.setState({
+              scoreboard: response.data,
+              newGame: false,
+            })
           })
-        })
-
       }
     });
   }
-  //GAME OVER
+
   getRemaining() {
     let correctLetters = this.state.correctLetters;
     let secretWord = this.state.secretWord;
@@ -245,7 +241,8 @@ class App extends React.Component {
       correctLetters: [],
       missedLetters: [],
       step: '1',
-      newGame: true
+      newGame: true,
+      score: 0
     })
   }
 
@@ -302,36 +299,25 @@ class App extends React.Component {
       }
     });
   }
-
-
   render() {
     return (
       <div className="App">
-        <Name>Hire-me Hangman 💀</Name>
-
-
-        <Input placeholder='1)Enter Name' onChange={this.handleChange} name='player'></Input>
-
+        <Name>plz-Hire-me Hangman</Name>
+        <Input
+          placeholder='1)Enter Name'
+          onChange={this.handleChange}
+          name='player'></Input>
         <Score>Score: {this.state.score}</Score>
         <Chances>Chances Left: {7 - this.state.step}</Chances>
         <br />
         <br />
         <br />
-          <Pick>2)Pick your poison:</Pick>
+        <Pick>2)Pick your poison:</Pick>
         <div>
-
-
           <Button1 onClick={() => this.handleEasy()}>Easy</Button1>
           <Button2 onClick={() => this.handleMedium()}>Medium</Button2>
           <Button3 onClick={() => this.handleSuperSmart()}>Hard</Button3>
         </div>
-
-
-
-
-
-
-
         <HangmanContainer step={this.state.step} />
         <NewGameButton
           onClick={this.onNewGame}
@@ -347,13 +333,27 @@ class App extends React.Component {
           guessedLetter={this.state.guessedLetter}
           choosenLetters={this.state.letters}
           missedLetters={this.state.missedLetters} />
-        <Scoreboard score={this.state.scoreboard}/>
+        <Scoreboard score={this.state.scoreboard} />
       </div>
     );
   }
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

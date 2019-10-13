@@ -23,13 +23,13 @@ CREATE TABLE scores (
 INSERT INTO players (player_name) VALUES ('Michelle');
 INSERT INTO players (player_name) VALUES ('Ryan');
 INSERT INTO players (player_name) VALUES ('Chris');
-INSERT INTO players (player_name) VALUES ('Gene');
+INSERT INTO players (player_name) VALUES ('OptimusPrime');
 
 
 
-INSERT INTO scores (user_id, score, date) VALUES (2, 20, "10/01/2019");
-INSERT INTO scores (user_id, score, date) VALUES (4, 10, "10/02/2019");
-INSERT INTO scores (user_id, score, date) VALUES (1, 25, "10/03/2019");
+INSERT INTO scores (user_id, score, date) VALUES (2, 10, "10/01/2019");
+INSERT INTO scores (user_id, score, date) VALUES (4, 25, "10/02/2019");
+INSERT INTO scores (user_id, score, date) VALUES (1, 8, "10/03/2019");
 INSERT INTO scores (user_id, score, date) VALUES (1, 5, "10/04/2019");
 INSERT INTO scores (user_id, score, date) VALUES (3, 12, "10/05/2019");
 

@@ -39,7 +39,9 @@ const insertScore = (playerName, score, callback) => {
         })
       })
     } else {
-      const userId = results.player_id;
+      console.log('Player Exists!')
+      const userId = results[0].player_id;
+      console.log('USER ID', results)
       const queryInsertNewScore = `INSERT INTO scores (user_id, score, date) VALUES (${userId}, ${score}, "10/01/2019");`;
       con.query(queryInsertNewScore, (err, results) => {
         getScoreBoard((updatedBoard) => {
@@ -51,12 +53,12 @@ const insertScore = (playerName, score, callback) => {
   })
 }
 
-
-
-
 module.exports = {
   getScoreBoard,
   insertScore
 }
+
+
+
 
 

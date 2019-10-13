@@ -51,12 +51,12 @@ const insertScore = (playerName, score, callback) => {
       })
     }
   })
-}
+};
 
 module.exports = {
   getScoreBoard,
   insertScore
-}
+};
 
 
 

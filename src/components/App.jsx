@@ -248,7 +248,7 @@ class App extends React.Component {
 
   handleClue() {
     $.ajax({
-      url: 'http://localhost:3000/clue',
+      url: 'http://ec2-13-58-49-240.us-east-2.compute.amazonaws.com/clue',
       type: 'GET',
       dataType: 'json',
       data: JSON.stringify(difficultySetting),
@@ -282,7 +282,7 @@ class App extends React.Component {
     })
 
     $.ajax({
-      url: 'http://localhost:3000/difficulty',
+      url: 'http://ec2-13-58-49-240.us-east-2.compute.amazonaws.com/difficulty',
       type: 'GET',
       dataType: 'json',
       data: JSON.stringify(difficultySetting),

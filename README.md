@@ -21,8 +21,8 @@
  x MAKE API SECTION IN README
  - revisit to bundle into a `dist` folder
   - Add error Handling
-  - All-things-keyboard and UI'y
-  - A mySQL based scoreboard component
+  x All-things-keyboard and UI'y
+  x A mySQL based scoreboard component
   x And mysql in general
   - AWS EC2 deploy
 	Stretch goals-

@@ -37,7 +37,7 @@ function NewGame(props) {
     Play Again
   </Button>
   )
-}
+};
 
 export default NewGame;
 

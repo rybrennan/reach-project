@@ -24,6 +24,7 @@
   - Add error Handling
   x All-things-keyboard and UI'y
   x A MySQL based scoreboard component
+  x Figure out how to work w/png's
   x And Mysql in general
   x AWS EC2 deploy
 	Stretch goals-

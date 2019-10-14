@@ -2,7 +2,7 @@
 
 - [1.1. To do](#11-to-do)
 - [1.2. Usage](#12-usage)
-- [1.3. API endpoints](#121-api-endpoints)
+- [1.3. API endpoints](#13-api-endpoints)
 - [1.4. Development Setup](#14-development-setup)
 - [1.5. Log](#15-log)
   - [1.5.1. Setting up React without CRA](#151-setting-up-react-without-CRA)
@@ -13,7 +13,7 @@
   - [1.5.3. Refactor Functionality around handleCheckLetter](#153-refactor-functionality-around-handleCheckLetter)
   - [1.5.4. Setting up MySQL](#154-setting-up-mysql)
   - [1.5.5. Deployment to AWS EC2 virtual machine](#155-deployment-to-aws-ec2-virtual-machine)
-
+- [1.6. Stretch Goals](#16-stretch-goals)
 ## 1.1. To do
 
 ```
@@ -55,8 +55,6 @@ Below you can find all available endpoints.
 
 + GET `/difficulty`
   - when the user hits `easy`, `medium`, or `hard`, an `ajax` request on the client hits the server `/difficulty`.  The setting is then passed to the `getWordByDifficulty` method which pings the Linkedin API with an `axios` GET request.
-  `${linkedinUrl}?difficulty=${rating}&count=50&minLength=4 `
-   This returns 50 words according to that difficulty and we present the user with a random one from the collection as to avoid repeats
 
 + GET `/scoreboard`
   - in `componentDidMount`, this route is called which pulls the scoreboard from the database and renders the scoreboard component.
@@ -140,7 +138,6 @@ module.exports = {
 ```
 
 #### 1.5.1.2 Configure Babel
-
 This command:
 
 ```
@@ -201,7 +198,11 @@ module.exports = {
 };
 ```
 #### 1.5.2 Setting up API
-- Will revisit commits to provide details
+- The Linkedin words API was relatively straightforward to deal with, which was nice.  Initially, I just had componentDidMount fetch to `/all` and could see how you could just pluck a random word out of it.  But I wanted to select a word by difficulty.
+- I used  `${linkedinUrl}?difficulty=${rating}&count=50&minLength=4 `
+   This returns 50 words according to the given difficulty and a random word is selected from the collection on the server-side, which is sent to the client.
+- Also, I ended up using Axios, Ajax, and Fetch for various requests.  Normally I would do my best to keep this uniform across the app but each were providing issues with various implementations so the goal was just to get to MVP.  That being said, I also thought it might show my resourcefullness.
+- In `1.6. Stretch Goals`, there is some detail about some work that was used to implement the `wordsAPI` for definitions/clues.
 
 ### 1.5.3. Refactor Functionality around `handleCheckLetter`
 - Will revisit commits to provide details
@@ -249,7 +250,6 @@ INSERT INTO scores (user_id, score, date) VALUES (3, 12, "10/05/2019");
 Upon receiving a top score, and if the player is a new user, the `insertScore` database method first inserts the player's name into the the `players` table.  With a successful insert, an object with a property of `insertId` is returned from `MySQL` which is also the player's new `player_id`.  We then use this `player_id` to insert the new score into the `scores` table.  The database `getScoreBoard` method is then run to re-sort the scores and return our newscoreboard to be rendered as soon as the winning game is complete
 
 ### 1.5.5. Deployment to AWS EC2 virtual machine
-
 Originally I wanted to deploy the database to a seperate virtual machine and have the app access it remotely.  But it had been a bit since I had to install MySQL from scratch.  I kept running into the dreaded `Access denied for user 'root'@'localhost'`. That took a considerable bit of more time than anticipated to get squared away.  So I just kept it all on one instance.  That being said, I used an Ubuntu server and cloned down my `08-deployed` branch.
 ![upload](docs_media/ubuntu.png)
 ![upload](docs_media/t2micro.png)
@@ -262,3 +262,7 @@ The app was not rendering despite putting everything possible into the inbound s
 I kept getting `Error: listen EACCES: permission denied 0.0.0.0:80`
 After changing my server start script to include `sudo`, it was finally doing the thing
 ![upload](docs_media/securitygroups.png)
+
+## 1.6. Stretch Goals
+
+in `App.jsx` there is a `handleClue` function that would reach out to the `WordsAPI` through `rapidAPI`.  I was just having some issues with the API keys and the shape of the data so I put it aside to revisit for sake of time.  The clue button would deduct some amount from the overall score.

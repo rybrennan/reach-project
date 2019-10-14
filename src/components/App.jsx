@@ -113,7 +113,7 @@ class App extends React.Component {
       mappedWord: {},
       correctLetters: [],
       missedLetters: '',
-      missedList2:'',
+      missedList2: '',
       step: '1',
       newGame: true,
       difficulty: '',
@@ -147,25 +147,25 @@ class App extends React.Component {
       .catch((err) => {
         console.log('We have an error, ', err)
       })
-  }
+  };
 
   handleEasy() {
     this.handleAjax('easy');
-  }
+  };
 
   handleMedium() {
     this.handleAjax('medium');
-  }
+  };
 
   handleSuperSmart() {
     this.handleAjax('hard');
-  }
+  };
 
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     })
-  }
+  };
 
   handleClick(e) {
     let currentGuessedLetter = e.target.textContent;
@@ -178,7 +178,7 @@ class App extends React.Component {
     }, () => {
       this.handleCheckLetter();
     })
-  }
+  };
 
   handleCheckLetter() {
     let currentGuessedLetter = this.state.guessedLetter;
@@ -251,6 +251,7 @@ class App extends React.Component {
       mappedWord: {},
       correctLetters: [],
       missedLetters: [],
+      missedList2: '',
       step: '1',
       newGame: true,
       score: 0
@@ -266,10 +267,7 @@ class App extends React.Component {
       contentType: 'application/json',
       success: function (wordsArray) {
 
-        self.setState({
-          secretWord: wordsArray[0],
-          mappedWord: wordsArray[1],
-        })
+       //set state for clues
       },
       error: function (data) {
         console.error(`Error in handle${setting}`, data);

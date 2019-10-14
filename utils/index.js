@@ -13,7 +13,6 @@ const http2 = axios.create({
 const getAll = (callback) => {
   http.get(`${linkedinUrl}?difficulty=2&count=1`)
   .then((response) => {
-
     callback(null, response.data);
   })
   .catch((error) => {
@@ -29,9 +28,9 @@ const mapWord = (secretWord) => {
     let char = secretWord[i];
     !map[char] ? map[char] = 1 : map[char] ++;
   }
-
   return map;
 }
+
 
 //queries the Linkedin API to return an array of 50 words according to difficulty
 //sends a single word back to the server as a word & mappedWord
@@ -52,8 +51,6 @@ const getWordByDifficulty = (rating, callback) => {
     }
 
     const getWordClue = (word, callback) => {
-      // axios.get(URL, { params:{}, headers: { 'Authorization': AuthStr } })
-
       http2.get(`${wordsUrl}/words/${word}/definitions`, { headers: {"x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
       "x-rapidapi-key": "oBL36Vab07mshN89Y6zhLzcGTFl2p1Rga7AjsnEoiHYwPJl0wM"} })
       .then((res) => {
@@ -69,9 +66,7 @@ const getWordByDifficulty = (rating, callback) => {
       getWordByDifficulty,
     };
 
-  //  getWordClue('difficult', (results) => {
-  //    console.log(results)
-  //  })
+
 
 
 

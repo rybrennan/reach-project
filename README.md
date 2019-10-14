@@ -45,6 +45,7 @@
 - The guesser wins the game if they guess all letters in the secret word correctly and have
 - not already lost the game per the conditions above
 
+
 ![upload](UI.gif)
 
 ## 1.3. API Endpoints

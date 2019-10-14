@@ -11,7 +11,8 @@
     - [1.5.1.3 Make Webpack aware of Babel](#1513-make-webpack-aware-of-babel)
   - [1.5.2. Setting up API](#152-setting-up-api)
   - [1.5.3. Refactor Functionality around handleCheckLetter](#153-refactor-functionality-around-handleCheckLetter)
-  - [1.5.4. Setting up MySQL](#154-setting-up-mqsql)
+  - [1.5.4. Setting up MySQL](#154-setting-up-mysql)
+  - [1.5.5. Deployment to AWS EC2 virtual machine](#155-deployment-to-aws-ec2-virtual-machine)
 
 ## 1.1. To do
 
@@ -21,10 +22,10 @@
  x MAKE API SECTION IN README
  - revisit to bundle into a `dist` folder
   - Add error Handling
-  - All-things-keyboard and UI'y
-  - A mySQL based scoreboard component
+  x All-things-keyboard and UI'y
+  x A mySQL based scoreboard component
   x And mysql in general
-  - AWS EC2 deploy
+  x AWS EC2 deploy
 	Stretch goals-
 - A dictionary (clue) API- eg
 - and corresponding compomemt
@@ -44,18 +45,31 @@
 - The guesser wins the game if they guess all letters in the secret word correctly and have
 - not already lost the game per the conditions above
 
-##  1.3. API Endpoints
+![upload](UI.gif)
+
+## 1.3. API Endpoints
 
 Below you can find all available endpoints.
 
-+ GET `/:trailId/trailStats`
-  - Given a trailId, retrieves stats of trail according reviews given. -->
++ GET `/difficulty`
+  - when the user hits `easy`, `medium`, or `hard`, an `ajax` request on the client hits the server `/difficulty`.  The setting is then passed to the `getWordByDifficulty` method which pings the Linkedin API with an `axios` GET request.
+  `${linkedinUrl}?difficulty=${rating}&count=50&minLength=4 `
+   This returns 50 words according to that difficulty and we present the user with a random one from the collection as to avoid repeats
+
++ GET `/scoreboard`
+  - in `componentDidMount`, this route is called which pulls the scoreboard from the database and renders the scoreboard component.
+
++ POST `/insertscore`
+  - when the user wins, their score is entered into the database and the scoreboard is reconfigured to be immediately shown with the updated score if applicable (top 5).  Details in `1.5.4. Setting up MySQL`
+
 
 ## 1.4. Development Setup
 
 - Server: [Express](http://expressjs.com/)
 - Client: [React](http://reactjs.org/)
 - Database: [mySQL](https://dev.mysql.com/doc/refman/5.7/en/)
+- Deployment: [AWS EC2](https://aws.amazon.com/ec2/)
+- Deployed Instance: [plz-hire-me Hangman](http://ec2-13-58-49-240.us-east-2.compute.amazonaws.com/)
 
 ```sh
 # install npm dependencies
@@ -184,10 +198,65 @@ module.exports = {
   }
 };
 ```
+#### 1.5.2 Setting up API
+- Will revisit commits to provide details
+
 ### 1.5.3. Refactor Functionality around `handleCheckLetter`
+- Will revisit commits to provide details
+
 ### 1.5.4. Setting up MySQL
+```sh
+$> npm run seed-db
+```
+The above command runs the `schema.sql` file which seeds the database with existing players and top scores that will be rendered in the `Scoreboard` component
+
+```sql
+DROP DATABASE IF EXISTS board;
+
+CREATE DATABASE board;
+
+USE board;
+
+CREATE TABLE players (
+  player_id int NOT NULL AUTO_INCREMENT,
+  player_name varchar(100),
+  PRIMARY KEY (player_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE scores (
+  score_id int NOT NULL AUTO_INCREMENT,
+  user_id int NOT NULL,
+  score int NOT NULL,
+  date varchar(20),
+  FOREIGN KEY (user_id) REFERENCES players(player_id),
+  PRIMARY KEY (score_id)
+) ENGINE=InnoDB;
+
+INSERT INTO players (player_name) VALUES ('Michelle');
+INSERT INTO players (player_name) VALUES ('Ryan');
+INSERT INTO players (player_name) VALUES ('Chris');
+INSERT INTO players (player_name) VALUES ('OptimusPrime');
+
+INSERT INTO scores (user_id, score, date) VALUES (2, 10, "10/01/2019");
+INSERT INTO scores (user_id, score, date) VALUES (4, 25, "10/02/2019");
+INSERT INTO scores (user_id, score, date) VALUES (1, 8, "10/03/2019");
+INSERT INTO scores (user_id, score, date) VALUES (1, 5, "10/04/2019");
+INSERT INTO scores (user_id, score, date) VALUES (3, 12, "10/05/2019");
+
+```
+Upon receiving a top score, and if the player is a new user, the `insertScore` database method first inserts the player's name into the the `players` table.  With a successful insert, an object with a property of `insertId` is returned from `mySQL` which is also the player's new `player_id`.  We then use this `player_id` to insert the new score into the `scores` table.  The database `getScoreBoard` method is then run to re-sort the scores and return our newscoreboard to be rendered as soon as the winning game is complete
+
+### 1.5.5. Deployment to AWS EC2 virtual machine
+
+Originally I wanted to deploy the database to a seperate virtual machine and have the app access it remotely.  But it had been a bit since I had to install mySQL from scratch.  I kept running into the dreaded `Access denied for user 'root'@'localhost'`. That took a considerable bit of more time than anticipated to get squared away.  So I just kept it all on one instance.  That being said, I used an Ubuntu server and cloned down my `08-deployed` branch.
+![upload](ubuntu.png)
+![upload](t2micro.png)
 
 
+Woop woop- connected to the virtual machine's database
+![upload](ec2db.png)
 
-
-
+The app was not rendering despite putting everything possible into the inbound security groups
+I kept getting `Error: listen EACCES: permission denied 0.0.0.0:80`
+After changing my server start script to include `sudo`, it was finally doing the thing
+![upload](securitygroups.png)

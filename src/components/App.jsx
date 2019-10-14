@@ -40,6 +40,14 @@ position:absolute;
 right: 30%;
 top: 15%;
 `
+const Missed = styled.h1`
+font-size: 24px;
+font-family: 'Mansalva', sans-serif;
+margin: 0;
+position:absolute;
+right: 30%;
+top: 25%;
+`
 const Chances = styled.h1`
 font-size: 24px;
 font-family: 'Mansalva', sans-serif;
@@ -104,7 +112,7 @@ class App extends React.Component {
       guessedLetter: 'testing',
       mappedWord: {},
       correctLetters: [],
-      missedLetters: [],
+      missedLetters: '',
       step: '1',
       newGame: true,
       difficulty: '',
@@ -200,8 +208,10 @@ class App extends React.Component {
           })
         } else if (!self.state.secretWord.includes(self.state.guessedLetter)) {
           score - 1 >= 0 ? score = score - 1 : score = 0;
+          let missed = self.state.missedLetters + self.state.guessedLetter
           self.setState({
-            score
+            score,
+            missedLetters: missed.toUpperCase()
           })
         }
       })
@@ -308,8 +318,10 @@ class App extends React.Component {
           onChange={this.handleChange}
           name='player'></Input>
         <Score>Score: {this.state.score}</Score>
+        <Missed>Missed Letters: {this.state.missedLetters}</Missed>
         <Chances>Chances Left: {7 - this.state.step}</Chances>
-        <br />
+        <br
+        />
         <br />
         <br />
         <Pick>2)Pick your poison:</Pick>

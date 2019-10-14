@@ -113,6 +113,7 @@ class App extends React.Component {
       mappedWord: {},
       correctLetters: [],
       missedLetters: '',
+      missedList2:'',
       step: '1',
       newGame: true,
       difficulty: '',
@@ -208,10 +209,10 @@ class App extends React.Component {
           })
         } else if (!self.state.secretWord.includes(self.state.guessedLetter)) {
           score - 1 >= 0 ? score = score - 1 : score = 0;
-          let missed = self.state.missedLetters + self.state.guessedLetter
+          let missed = self.state.missedList2 + self.state.guessedLetter
           self.setState({
             score,
-            missedLetters: missed.toUpperCase()
+            missedList2: missed.toUpperCase()
           })
         }
       })
@@ -318,7 +319,7 @@ class App extends React.Component {
           onChange={this.handleChange}
           name='player'></Input>
         <Score>Score: {this.state.score}</Score>
-        <Missed>Missed Letters: {this.state.missedLetters}</Missed>
+        <Missed>Missed Letters: {this.state.missedList2}</Missed>
         <Chances>Chances Left: {7 - this.state.step}</Chances>
         <br
         />

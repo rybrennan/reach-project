@@ -23,18 +23,18 @@
  - revisit to bundle into a `dist` folder
   - Add error Handling
   x All-things-keyboard and UI'y
-  x A mySQL based scoreboard component
-  x And mysql in general
+  x A MySQL based scoreboard component
+  x And Mysql in general
   x AWS EC2 deploy
 	Stretch goals-
 - A dictionary (clue) API- eg
-- and corresponding compomemt
+- and corresponding component
   Stretchy Stretch goals-
   -extract scoreboard module and have it deployed as it's own -standalone app to be rendered
 	- Webscale and test Latency
    in the main app or a proxy
   A lil Over-the-top:
-	-A blockchain powered scorring system of some sort
+	-A blockchain powered scoring system of some sort
 
 ```
 
@@ -68,7 +68,7 @@ Below you can find all available endpoints.
 
 - Server: [Express](http://expressjs.com/)
 - Client: [React](http://reactjs.org/)
-- Database: [mySQL](https://dev.mysql.com/doc/refman/5.7/en/)
+- Database: [MySQL](https://dev.mysql.com/doc/refman/5.7/en/)
 - Deployment: [AWS EC2](https://aws.amazon.com/ec2/)
 - Deployed Instance: [plz-hire-me Hangman](http://ec2-13-58-49-240.us-east-2.compute.amazonaws.com/)
 
@@ -102,7 +102,7 @@ $ npm run react-dev
 ### 1.5.1. Setting up React without CRA
 
 I work regularly with React but it had been a bit since I setup a React application from scratch.
-I opted to forgoe using Create React App so I could get a review on what Webpack and Babel were doing behind the scenes.
+I opted to forgo using Create React App so I could get a review on what Webpack and Babel were doing behind the scenes.
 
 #### 1.5.1.1 Configure Webpack
 
@@ -245,11 +245,11 @@ INSERT INTO scores (user_id, score, date) VALUES (1, 5, "10/04/2019");
 INSERT INTO scores (user_id, score, date) VALUES (3, 12, "10/05/2019");
 
 ```
-Upon receiving a top score, and if the player is a new user, the `insertScore` database method first inserts the player's name into the the `players` table.  With a successful insert, an object with a property of `insertId` is returned from `mySQL` which is also the player's new `player_id`.  We then use this `player_id` to insert the new score into the `scores` table.  The database `getScoreBoard` method is then run to re-sort the scores and return our newscoreboard to be rendered as soon as the winning game is complete
+Upon receiving a top score, and if the player is a new user, the `insertScore` database method first inserts the player's name into the the `players` table.  With a successful insert, an object with a property of `insertId` is returned from `MySQL` which is also the player's new `player_id`.  We then use this `player_id` to insert the new score into the `scores` table.  The database `getScoreBoard` method is then run to re-sort the scores and return our newscoreboard to be rendered as soon as the winning game is complete
 
 ### 1.5.5. Deployment to AWS EC2 virtual machine
 
-Originally I wanted to deploy the database to a seperate virtual machine and have the app access it remotely.  But it had been a bit since I had to install mySQL from scratch.  I kept running into the dreaded `Access denied for user 'root'@'localhost'`. That took a considerable bit of more time than anticipated to get squared away.  So I just kept it all on one instance.  That being said, I used an Ubuntu server and cloned down my `08-deployed` branch.
+Originally I wanted to deploy the database to a seperate virtual machine and have the app access it remotely.  But it had been a bit since I had to install MySQL from scratch.  I kept running into the dreaded `Access denied for user 'root'@'localhost'`. That took a considerable bit of more time than anticipated to get squared away.  So I just kept it all on one instance.  That being said, I used an Ubuntu server and cloned down my `08-deployed` branch.
 ![upload](docs_media/ubuntu.png)
 ![upload](docs_media/t2micro.png)
 

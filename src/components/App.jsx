@@ -258,22 +258,6 @@ class App extends React.Component {
     })
   }
 
-  handleClue() {
-    $.ajax({
-      url: 'http://localhost:3000/clue',
-      type: 'GET',
-      dataType: 'json',
-      data: JSON.stringify(difficultySetting),
-      contentType: 'application/json',
-      success: function (wordsArray) {
-
-       //set state for clues
-      },
-      error: function (data) {
-        console.error(`Error in handle${setting}`, data);
-      }
-    });
-  }
 
   handleAjax(setting) {
     let self = this;

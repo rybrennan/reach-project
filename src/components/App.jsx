@@ -106,7 +106,7 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      secretWord: 'Ryan',
+      secretWord: '',
       letters: [],
       scoreboard: [],
       guessedLetter: 'testing',

@@ -7,16 +7,26 @@ con.connect((err) => {
   console.log('Database Connected!!')
 });
 
-const getScoreBoard = ((callback) => {
-  const queryString = `SELECT scores.score, players.player_name, scores.date FROM scores
-  INNER JOIN players ON scores.user_id=players.player_id
-  ORDER BY scores.score DESC`;
-
-  con.query(queryString, (err, scoreBoard) => {
-    if (err) throw err;
-    callback(scoreBoard.slice(0,5))
+const query = queryString =>
+new Promise((resolve, reject) => {
+  con.query(queryString, (err, results) => {
+    if (err) {
+      reject(err)
+    } else {
+      resolve(results);
+    }
   })
-});
+})
+
+const GET_SCOREBOARD_QUERY = `SELECT scores.score, players.player_name, scores.date FROM scores
+INNER JOIN players ON scores.user_id=players.player_id
+ORDER BY scores.score DESC`;
+
+const getScoreBoard = () =>
+  new Promise ((resolve, reject) => {
+    resolve(query(GET_SCOREBOARD_QUERY)
+    .then(scoreboard => scoreboard.slice(0,5)));
+  })
 
 const insertScore = (playerName, score, callback) => {
   const queryCheckifPlayerExists = `SELECT * FROM players where player_name='${playerName}'`;

@@ -32,8 +32,9 @@ router.get('/difficulty', (req, res) => {
 // @desc   when component mounts in the client, this route gets..
 // the previous high score from the mysql database
 router.get('/scoreboard', (req, res) => {
-  db.getScoreBoard((scoreBoard) => {
-    res.status(200).json(scoreBoard);
+  db.getScoreBoard()
+  .then((scoreboard) => {
+    res.status(200).json(scoreboard);
   })
 })
 // @route  POST /insertscore

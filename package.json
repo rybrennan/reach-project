@@ -8,7 +8,7 @@
     "react-prod": "webpack --env.ENVIRONMENT=prod",
     "build": "webpack --mode development",
     "server-dev": "nodemon server/index.js",
-    "seed-db": "sudo mysql -uroot -p < schema.sql"
+    "seed-db": "mysql -uroot -p < schema.sql"
   },
   "keywords": [],
   "author": "Ryan Brennan",
@@ -17,7 +17,7 @@
     "@babel/runtime": "7.2.0",
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "mysql": "^2.17.1",
     "path": "^0.12.7",
